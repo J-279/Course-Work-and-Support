@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Cours Interactif - Sciences & Techniques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: linear-gradient(135deg, #1a1a4e, #2d1b69);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #6c63ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, #6c63ff, #48dbfb, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header-controls button {
+            padding: 8px 16px;
+            border: 2px solid #6c63ff;
+            background: transparent;
+            color: #6c63ff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .header-controls button:hover {
+            background: #6c63ff;
+            color: white;
+        }
+
+        .header-controls button.active {
+            background: #6c63ff;
+            color: white;
+        }
+
+        /* ========== SIDEBAR MATIÈRES ========== */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #0f0f3d;
+            border-right: 2px solid #1a1a5e;
+            padding: 15px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar h3 {
+            color: #6c63ff;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .sidebar-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-item:hover {
+            background: #1a1a5e;
+            border-left-color: #48dbfb;
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(108,99,255,0.2), transparent);
+            border-left-color: #6c63ff;
+            color: #6c63ff;
+            font-weight: bold;
+        }
+
+        .sidebar-item .icon {
+            font-size: 1.2rem;
+        }
+
+        /* ========== CONTENT ========== */
+        .content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        /* ========== QUESTION BLOCK ========== */
+        .question-block {
+            background: #12124a;
+            border: 2px solid #1e1e6e;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .question-block:hover {
+            border-color: #6c63ff;
+            box-shadow: 0 0 20px rgba(108, 99, 255, 0.15);
+        }
+
+        .question-header {
+            background: linear-gradient(135deg, #1a1a5e, #2d1b69);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .question-number {
+            background: #6c63ff;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .question-title {
+            flex: 1;
+            margin-left: 15px;
+            font-size: 1rem;
+        }
+
+        .question-difficulty {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .diff-facile { background: #00b894; color: white; }
+        .diff-moyen { background: #fdcb6e; color: #2d3436; }
+        .diff-difficile { background: #e17055; color: white; }
+
+        .question-body {
+            padding: 20px;
+        }
+
+        .question-text {
+            background: #0a0a35;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #6c63ff;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .question-text .formula {
+            background: #1a1a5e;
+            padding: 8px 14px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            color: #48dbfb;
+            font-size: 1.05rem;
+        }
+
+        .question-text .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .question-text .unit {
+            color: #feca57;
+        }
+
+        /* ========== ZONE DESSIN / ÉCRITURE ========== */
+        .answer-zone {
+            margin-top: 15px;
+        }
+
+        .answer-zone-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .answer-zone-header h4 {
+            color: #48dbfb;
+            font-size: 0.95rem;
+        }
+
+        .drawing-tools {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid #2a2a6e;
+            background: #0f0f3d;
+            color: #e0e0e0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .tool-btn:hover {
+            border-color: #6c63ff;
+            background: #1a1a5e;
+        }
+
+        .tool-btn.active {
+            border-color: #6c63ff;
+            background: #6c63ff;
+            color: white;
+        }
+
+        .color-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-btn:hover, .color-btn.active {
+            border-color: white;
+            transform: scale(1.2);
+        }
+
+        .size-slider {
+            width: 80px;
+            accent-color: #6c63ff;
+        }
+
+        .canvas-container {
+            position: relative;
+            border: 2px dashed #2a2a6e;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff;
+            cursor: crosshair;
+        }
+
+        .canvas-container canvas {
+            display: block;
+            width: 100%;
+            touch-action: none;
+        }
+
+        .canvas-container.lined {
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 29px,
+                #e8e8e8 29px,
+                #e8e8e8 30px
+            ), #ffffff;
+        }
+
+        .canvas-container.grid {
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 29px,
+                #e8e8e8 29px,
+                #e8e8e8 30px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 29px,
+                #e8e8e8 29px,
+                #e8e8e8 30px
+            ), #ffffff;
+        }
+
+        /* ========== TEXT ANSWER ========== */
+        .text-answer {
+            width: 100%;
+            min-height: 120px;
+            background: #0a0a35;
+            border: 2px solid #2a2a6e;
+            border-radius: 12px;
+            color: #e0e0e0;
+            padding: 15px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+            transition: border-color 0.3s;
+        }
+
+        .text-answer:focus {
+            outline: none;
+            border-color: #6c63ff;
+        }
+
+        /* ========== TOGGLE ANSWER TYPE ========== */
+        .answer-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .toggle-btn {
+            padding: 6px 14px;
+            border: 2px solid #2a2a6e;
+            background: transparent;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            border-color: #6c63ff;
+            background: #6c63ff;
+            color: white;
+        }
+
+        /* ========== STATUS BAR ========== */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-todo {
+            background: #2d3436;
+            color: #b2bec3;
+            border: 1px solid #636e72;
+        }
+
+        .status-done {
+            background: #00b894;
+            color: white;
+            border: 1px solid #00b894;
+        }
+
+        .status-review {
+            background: #fdcb6e;
+            color: #2d3436;
+            border: 1px solid #fdcb6e;
+        }
+
+        /* ========== ADD QUESTION ========== */
+        .add-question-btn {
+            width: 100%;
+            padding: 20px;
+            border: 3px dashed #2a2a6e;
+            background: transparent;
+            color: #6c63ff;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .add-question-btn:hover {
+            border-color: #6c63ff;
+            background: rgba(108, 99, 255, 0.05);
+        }
+
+        /* ========== MODAL ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #12124a;
+            border: 2px solid #6c63ff;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            color: #6c63ff;
+            margin-bottom: 20px;
+        }
+
+        .modal label {
+            display: block;
+            margin-bottom: 5px;
+            color: #48dbfb;
+            font-size: 0.9rem;
+        }
+
+        .modal input, .modal textarea, .modal select {
+            width: 100%;
+            padding: 10px;
+            background: #0a0a35;
+            border: 2px solid #2a2a6e;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .modal input:focus, .modal textarea:focus, .modal select:focus {
+            outline: none;
+            border-color: #6c63ff;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-actions button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-save {
+            background: #6c63ff;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #2d3436;
+            color: #e0e0e0;
+        }
+
+        /* ========== FULLSCREEN CANVAS ========== */
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: white;
+            z-index: 300;
+            flex-direction: column;
+        }
+
+        .fullscreen-overlay.show {
+            display: flex;
+        }
+
+        .fullscreen-toolbar {
+            background: #12124a;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .fullscreen-toolbar button {
+            padding: 8px 16px;
+            border: 2px solid #6c63ff;
+            background: transparent;
+            color: #6c63ff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .fullscreen-toolbar button:hover {
+            background: #6c63ff;
+            color: white;
+        }
+
+        .fullscreen-canvas-wrap {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .fullscreen-canvas-wrap canvas {
+            display: block;
+            touch-action: none;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        /* ========== MOBILE SIDEBAR TOGGLE ========== */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #6c63ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            .sidebar.mobile-show {
+                display: block;
+                position: fixed;
+                top: 0; left: 0;
+                width: 260px;
+                height: 100%;
+                z-index: 150;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+            }
+        }
+
+        /* ========== PRINT ========== */
+        @media print {
+            .header, .sidebar, .drawing-tools, .answer-toggle,
+            .status-bar, .add-question-btn, .header-controls {
+                display: none !important;
+            }
+            body { background: white; color: black; }
+            .question-block { border: 1px solid #ccc; break-inside: avoid; }
+            .canvas-container { border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div style="display:flex; align-items:center; gap:15px;">
+            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰</button>
+            <h1>📚 Cours Interactif</h1>
+        </div>
+        <div class="header-controls">
+            <button onclick="saveAll()">💾 Sauvegarder</button>
+            <button onclick="loadAll()">📂 Charger</button>
+            <button onclick="exportPDF()">📄 Imprimer</button>
+            <button onclick="clearAll()">🗑️ Tout effacer</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <h3>📖 Matières</h3>
+            <div class="sidebar-item active" onclick="selectSubject(this, 'physique-chimie')">
+                <span class="icon">⚗️</span> Physique-Chimie
+            </div>
+            <div class="sidebar-item" onclick="selectSubject(this, 'mathematiques')">
+                <span class="icon">📐</span> Mathématiques
+            </div>
+            <div class="sidebar-item" onclick="selectSubject(this, 'mecanique')">
+                <span class="icon">⚙️</span> Mécanique
+            </div>
+            <div class="sidebar-item" onclick="selectSubject(this, 'electrotech')">
+                <span class="icon">🔌</span> Électrotechnique
+            </div>
+            <div class="sidebar-item" onclick="selectSubject(this, 'electronique')">
+                <span class="icon">🔋</span> Électronique
+            </div>
+            <div class="sidebar-item" onclick="selectSubject(this, 'informatique')">
+                <span class="icon">💻</span> Informatique
+            </div>
+            <div class="sidebar-item" onclick="selectSubject(this, 'thermodynamique')">
+                <span class="icon">🌡️</span> Thermodynamique
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content" id="content">
+            <!-- Questions will be rendered here -->
+        </div>
+    </div>
+
+    <!-- MODAL : Ajouter une question -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <h2>➕ Nouvelle Question</h2>
+
+            <label>Titre de la question</label>
+            <input type="text" id="modalTitle" placeholder="Ex: Calcul de force...">
+
+            <label>Énoncé</label>
+            <textarea id="modalText" rows="5" placeholder="Écrivez l'énoncé ici...&#10;Utilisez [f] pour formule, [h] pour important"></textarea>
+
+            <label>Difficulté</label>
+            <select id="modalDiff">
+                <option value="facile">🟢 Facile</option>
+                <option value="moyen" selected>🟡 Moyen</option>
+                <option value="difficile">🔴 Difficile</option>
+            </select>
+
+            <label>Type de fond pour la réponse</label>
+            <select id="modalBg">
+                <option value="blank">Blanc (vide)</option>
+                <option value="lined">Ligné</option>
+                <option value="grid">Quadrillé</option>
+            </select>
+
+            <label>Hauteur du canvas (px)</label>
+            <input type="number" id="modalHeight" value="300" min="100" max="1000">
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+                <button class="btn-save" onclick="addQuestion()">✅ Ajouter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN CANVAS -->
+    <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <div class="fullscreen-toolbar" id="fullscreenToolbar">
+            <button onclick="closeFullscreen()">✕ Fermer</button>
+            <button onclick="fullscreenUndo()">↩️ Annuler</button>
+            <button onclick="fullscreenClear()">🗑️ Effacer</button>
+            <div class="drawing-tools" id="fullscreenTools"></div>
+        </div>
+        <div class="fullscreen-canvas-wrap">
+            <canvas id="fullscreenCanvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // DATA STORE
+        // =============================================
+        let currentSubject = 'physique-chimie';
+        let questionsDB = {};
+        let canvasInstances = {};
+
+        // Default questions per subject
+        const defaultQuestions = {
+            'physique-chimie': [
+                {
+                    id: 'pc1',
+                    title: 'Loi de Newton - Force et accélération',
+                    text: 'Un objet de masse <span class="highlight">m = 5 kg</span> est soumis à une force constante.<br><br>Sa vitesse passe de <span class="unit">v₁ = 2 m/s</span> à <span class="unit">v₂ = 12 m/s</span> en <span class="unit">t = 4 s</span>.<br><br>1) Calculez l\'accélération de l\'objet.<br>2) En déduire la force appliquée en utilisant : <span class="formula">F = m × a</span><br>3) Calculez l\'énergie cinétique finale : <span class="formula">Ec = ½ × m × v²</span>',
+                    difficulty: 'moyen',
+                    bgType: 'grid',
+                    canvasHeight: 350,
+                    status: 'todo'
+                },
+                {
+                    id: 'pc2',
+                    title: 'Réaction chimique - Équilibrage',
+                    text: 'Équilibrez la réaction de combustion du méthane :<br><br><span class="formula">CH₄ + O₂ → CO₂ + H₂O</span><br><br>1) Équilibrez cette équation.<br>2) Si on brûle <span class="highlight">3 moles</span> de CH₄, combien de moles de CO₂ sont produites ?<br>3) Calculez la masse de CO₂ produite. <span class="unit">(M(C)=12, M(O)=16 g/mol)</span>',
+                    difficulty: 'facile',
+                    bgType: 'lined',
+                    canvasHeight: 300,
+                    status: 'todo'
+                }
+            ],
+            'mathematiques': [
+                {
+                    id: 'math1',
+                    title: 'Dérivée et étude de fonction',
+                    text: 'Soit la fonction : <span class="formula">f(x) = 2x³ - 9x² + 12x - 4</span><br><br>1) Calculez <span class="formula">f\'(x)</span><br>2) Résolvez <span class="formula">f\'(x) = 0</span><br>3) Dressez le tableau de variations de f.<br>4) Tracez l\'allure de la courbe.',
+                    difficulty: 'moyen',
+                    bgType: 'grid',
+                    canvasHeight: 400,
+                    status: 'todo'
+                },
+                {
+                    id: 'math2',
+                    title: 'Intégrale définie',
+                    text: 'Calculez l\'intégrale suivante :<br><br><span class="formula">∫₀² (3x² + 2x - 1) dx</span><br><br>1) Trouvez la primitive F(x).<br>2) Calculez F(2) - F(0).<br>3) Interprétez géométriquement le résultat.',
+                    difficulty: 'moyen',
+                    bgType: 'grid',
+                    canvasHeight: 350,
+                    status: 'todo'
+                }
+            ],
+            'mecanique': [
+                {
+                    id: 'meca1',
+                    title: 'Moment de force et équilibre',
+                    text: 'Une poutre homogène AB de longueur <span class="unit">L = 4 m</span> et de masse <span class="unit">m = 20 kg</span> est en appui en son point A.<br><br>Une charge <span class="highlight">F = 150 N</span> est appliquée en B.<br><br>1) Faites le schéma des forces.<br>2) Calculez le moment de chaque force par rapport à A.<br>3) Déterminez la réaction en A pour l\'équilibre. <span class="formula">ΣM/A = 0</span>',
+                    difficulty: 'difficile',
+                    bgType: 'grid',
+                    canvasHeight: 400,
+                    status: 'todo'
+                }
+            ],
+            'electrotech': [
+                {
+                    id: 'et1',
+                    title: 'Transformateur monophasé',
+                    text: 'Un transformateur monophasé idéal a :<br>- Nombre de spires primaire : <span class="highlight">N₁ = 500</span><br>- Nombre de spires secondaire : <span class="highlight">N₂ = 50</span><br>- Tension primaire : <span class="unit">U₁ = 230 V</span><br><br>1) Calculez le rapport de transformation : <span class="formula">m = N₂/N₁</span><br>2) En déduire U₂.<br>3) Si le courant secondaire est I₂ = 10 A, calculez I₁.',
+                    difficulty: 'facile',
+                    bgType: 'lined',
+                    canvasHeight: 300,
+                    status: 'todo'
+                }
+            ],
+            'electronique': [
+                {
+                    id: 'elec1',
+                    title: 'Circuit RC - Charge du condensateur',
+                    text: 'Un circuit RC série est composé de :<br>- <span class="highlight">R = 10 kΩ</span><br>- <span class="highlight">C = 100 μF</span><br>- Alimenté par <span class="unit">E = 12 V</span><br><br>1) Calculez la constante de temps : <span class="formula">τ = R × C</span><br>2) Quelle est la tension aux bornes du condensateur à t = τ ?<br>3) Au bout de combien de temps le condensateur est-il chargé à 99% ?<br>4) Tracez Uc(t).',
+                    difficulty: 'moyen',
+                    bgType: 'grid',
+                    canvasHeight: 400,
+                    status: 'todo'
+                }
+            ],
+            'informatique': [
+                {
+                    id: 'info1',
+                    title: 'Conversion binaire-décimal',
+                    text: '1) Convertissez en décimal : <span class="formula">1101 0110₂</span><br>2) Convertissez en binaire : <span class="formula">197₁₀</span><br>3) Effectuez l\'addition binaire : <span class="formula">1011 + 0110</span><br>4) Convertissez en hexadécimal : <span class="formula">1111 1010₂</span>',
+                    difficulty: 'facile',
+                    bgType: 'lined',
+                    canvasHeight: 300,
+                    status: 'todo'
+                }
+            ],
+            'thermodynamique': [
+                {
+                    id: 'thermo1',
+                    title: 'Premier principe - Gaz parfait',
+                    text: 'Un gaz parfait subit une transformation isobare à <span class="unit">P = 2 bar</span>.<br>Son volume passe de <span class="unit">V₁ = 5 L</span> à <span class="unit">V₂ = 8 L</span>.<br><br>1) Calculez le travail W : <span class="formula">W = -P × ΔV</span><br>2) Si la chaleur reçue est Q = 1200 J, calculez ΔU.<br>3) Expliquez le signe de W. <span class="formula">ΔU = W + Q</span>',
+                    difficulty: 'moyen',
+                    bgType: 'grid',
+                    canvasHeight: 350,
+                    status: 'todo'
+                }
+            ]
+        };
+
+        // Initialize DB
+        function initDB() {
+            for (let subject in defaultQuestions) {
+                if (!questionsDB[subject]) {
+                    questionsDB[subject] = JSON.parse(JSON.stringify(defaultQuestions[subject]));
+                }
+            }
+        }
+
+        // =============================================
+        // RENDER
+        // =============================================
+        function renderQuestions() {
+            const content = document.getElementById('content');
+            const questions = questionsDB[currentSubject] || [];
+
+            let html = `<h2 style="margin-bottom:20px; color:#6c63ff;">${getSubjectName(currentSubject)}</h2>`;
+
+            questions.forEach((q, index) => {
+                const statusClass = q.status === 'done' ? 'status-done' : q.status === 'review' ? 'status-review' : 'status-todo';
+                const statusText = q.status === 'done' ? '✅ Terminé' : q.status === 'review' ? '🔍 À revoir' : '⬜ À faire';
+                const canvasId = `canvas_${currentSubject}_${q.id}`;
+
+                html += `
+                <div class="question-block" id="block_${q.id}">
+                    <div class="question-header" onclick="toggleQuestion('${q.id}')">
+                        <div style="display:flex; align-items:center;">
+                            <div class="question-number">${index + 1}</div>
+                            <div class="question-title">${q.title}</div>
+                        </div>
+                        <span class="question-difficulty diff-${q.difficulty}">${q.difficulty}</span>
+                    </div>
+                    <div class="question-body" id="body_${q.id}">
+                        <div class="question-text">${q.text}</div>
+
+                        <div class="answer-zone">
+                            <div class="answer-zone-header">
+                                <h4>✍️ Votre réponse :</h4>
+                            </div>
+
+                            <div class="answer-toggle">
+                                <button class="toggle-btn active" onclick="showDrawMode('${q.id}', '${canvasId}', this)">🖊️ Dessin / Stylet</button>
+                                <button class="toggle-btn" onclick="showTextMode('${q.id}', this)">⌨️ Texte</button>
+                                <button class="toggle-btn" onclick="openFullscreen('${canvasId}')">🔲 Plein écran</button>
+                            </div>
+
+                            <!-- DRAWING MODE -->
+                            <div id="draw_${q.id}">
+                                <div class="drawing-tools" id="tools_${canvasId}">
+                                    <button class="tool-btn active" onclick="setTool('${canvasId}', 'pen', this)" title="Stylo">✒️</button>
+                                    <button class="tool-btn" onclick="setTool('${canvasId}', 'highlighter', this)" title="Surligneur">🖍️</button>
+                                    <button class="tool-btn" onclick="setTool('${canvasId}', 'eraser', this)" title="Gomme">🧹</button>
+                                    <button class="tool-btn" onclick="undoCanvas('${canvasId}')" title="Annuler">↩️</button>
+                                    <button class="tool-btn" onclick="clearCanvas('${canvasId}')" title="Effacer tout">🗑️</button>
+
+                                    <div style="width:1px;height:25px;background:#2a2a6e;margin:0 4px;"></div>
+
+                                    <div class="color-btn active" style="background:#000000;" onclick="setColor('${canvasId}', '#000000', this)"></div>
+                                    <div class="color-btn" style="background:#1e90ff;" onclick="setColor('${canvasId}', '#1e90ff', this)"></div>
+                                    <div class="color-btn" style="background:#e74c3c;" onclick="setColor('${canvasId}', '#e74c3c', this)"></div>
+                                    <div class="color-btn" style="background:#27ae60;" onclick="setColor('${canvasId}', '#27ae60', this)"></div>
+                                    <div class="color-btn" style="background:#f39c12;" onclick="setColor('${canvasId}', '#f39c12', this)"></div>
+                                    <div class="color-btn" style="background:#8e44ad;" onclick="setColor('${canvasId}', '#8e44ad', this)"></div>
+
+                                    <div style="width:1px;height:25px;background:#2a2a6e;margin:0 4px;"></div>
+
+                                    <input type="range" class="size-slider" min="1" max="20" value="2" onchange="setSize('${canvasId}', this.value)" title="Épaisseur">
+                                </div>
+
+                                <div class="canvas-container ${q.bgType}" id="container_${canvasId}">
+                                    <canvas id="${canvasId}" height="${q.canvasHeight}"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- TEXT MODE (hidden) -->
+                            <div id="text_${q.id}" style="display:none;">
+                                <textarea class="text-answer" id="textarea_${q.id}" placeholder="Tapez votre réponse ici...">${q.textAnswer || ''}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="status-bar">
+                            <div>
+                                <span class="status-badge ${statusClass}" onclick="cycleStatus('${q.id}')">${statusText}</span>
+                            </div>
+                            <button style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:0.85rem;" onclick="deleteQuestion('${q.id}')">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            html += `<button class="add-question-btn" onclick="openModal()">➕ Ajouter une question</button>`;
+
+            content.innerHTML = html;
+
+            // Init canvases
+            questions.forEach(q => {
+                const canvasId = `canvas_${currentSubject}_${q.id}`;
+                initCanvas(canvasId);
+            });
+        }
+
+        function getSubjectName(key) {
+            const names = {
+                'physique-chimie': '⚗️ Physique-Chimie',
+                'mathematiques': '📐 Mathématiques',
+                'mecanique': '⚙️ Mécanique',
+                'electrotech': '🔌 Électrotechnique',
+                'electronique': '🔋 Électronique',
+                'informatique': '💻 Informatique',
+                'thermodynamique': '🌡️ Thermodynamique'
+            };
+            return names[key] || key;
+        }
+
+        // =============================================
+        // CANVAS ENGINE
+        // =============================================
+        function initCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width;
+
+            const ctx = canvas.getContext('2d');
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            canvasInstances[canvasId] = {
+                ctx: ctx,
+                canvas: canvas,
+                drawing: false,
+                tool: 'pen',
+                color: '#000000',
+                size: 2,
+                history: [],
+                lastPoint: null
+            };
+
+            // Restore saved drawing
+            const savedData = localStorage.getItem(`drawing_${canvasId}`);
+            if (savedData) {
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0);
+                img.src = savedData;
+            }
+
+            // Save current state
+            saveCanvasState(canvasId);
+
+            // Event listeners - pointer events for stylus support
+            canvas.addEventListener('pointerdown', (e) => startDraw(e, canvasId));
+            canvas.addEventListener('pointermove', (e) => draw(e, canvasId));
+            canvas.addEventListener('pointerup', (e) => endDraw(e, canvasId));
+            canvas.addEventListener('pointerleave', (e) => endDraw(e, canvasId));
+
+            // Prevent scrolling while drawing
+            canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+            canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        }
+
+        function getCanvasPos(e, canvasId) {
+            const inst = canvasInstances[canvasId];
+            const rect = inst.canvas.getBoundingClientRect();
+            const scaleX = inst.canvas.width / rect.width;
+            const scaleY = inst.canvas.height / rect.height;
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY,
+                pressure: e.pressure || 0.5
+            };
+        }
+
+        function startDraw(e, canvasId) {
+            const inst = canvasInstances[canvasId];
+            inst.drawing = true;
+            const pos = getCanvasPos(e, canvasId);
+            inst.lastPoint = pos;
+
+            inst.ctx.beginPath();
+            inst.ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e, canvasId) {
+            const inst = canvasInstances[canvasId];
+            if (!inst.drawing) return;
+
+            const pos = getCanvasPos(e, canvasId);
+
+            inst.ctx.beginPath();
+            inst.ctx.moveTo(inst.lastPoint.x, inst.lastPoint.y);
+            inst.ctx.lineTo(pos.x, pos.y);
+
+            if (inst.tool === 'pen') {
+                inst.ctx.globalAlpha = 1;
+                inst.ctx.globalCompositeOperation = 'source-over';
+                inst.ctx.strokeStyle = inst.color;
+                // Pressure sensitivity
+                const pressureSize = inst.size * (0.5 + pos.pressure);
+                inst.ctx.lineWidth = pressureSize;
+            } else if (inst.tool === 'highlighter') {
+                inst.ctx.globalAlpha = 0.3;
+                inst.ctx.globalCompositeOperation = 'source-over';
+                inst.ctx.strokeStyle = inst.color;
+                inst.ctx.lineWidth = inst.size * 5;
+            } else if (inst.tool === 'eraser') {
+                inst.ctx.globalAlpha = 1;
+                inst.ctx.globalCompositeOperation = 'destination-out';
+                inst.ctx.strokeStyle = 'rgba(0,0,0,1)';
+                inst.ctx.lineWidth = inst.size * 5;
+            }
+
+            inst.ctx.stroke();
+            inst.lastPoint = pos;
+        }
+
+        function endDraw(e, canvasId) {
+            const inst = canvasInstances[canvasId];
+            if (inst.drawing) {
+                inst.drawing = false;
+                inst.ctx.globalAlpha = 1;
+                inst.ctx.globalCompositeOperation = 'source-over';
+                saveCanvasState(canvasId);
+                autoSaveDrawing(canvasId);
+            }
+        }
+
+        function saveCanvasState(canvasId) {
+            const inst = canvasInstances[canvasId];
+            if (!inst) return;
+            const data = inst.canvas.toDataURL();
+            inst.history.push(data);
+            if (inst.history.length > 30) inst.history.shift();
+        }
+
+        function undoCanvas(canvasId) {
+            const inst = canvasInstances[canvasId];
+            if (!inst || inst.history.length < 2) return;
+
+            inst.history.pop();
+            const prevData = inst.history[inst.history.length - 1];
+
+            const img = new Image();
+            img.onload = () => {
+                inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
+                inst.ctx.drawImage(img, 0, 0);
+                autoSaveDrawing(canvasId);
+            };
+            img.src = prevData;
+        }
+
+        function clearCanvas(canvasId) {
+            const inst = canvasInstances[canvasId];
+            if (!inst) return;
+            if (!confirm('Effacer tout le contenu ?')) return;
+            inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
+            saveCanvasState(canvasId);
+            autoSaveDrawing(canvasId);
+        }
+
+        function autoSaveDrawing(canvasId) {
+            const inst = canvasInstances[canvasId];
+            if (!inst) return;
+            localStorage.setItem(`drawing_${canvasId}`, inst.canvas.toDataURL());
+        }
+
+        function setTool(canvasId, tool, btn) {
+            const inst = canvasInstances[canvasId];
+            if (inst) inst.tool = tool;
+
+            const toolbar = btn.parentElement;
+            toolbar.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function setColor(canvasId, color, btn) {
+            const inst = canvasInstances[canvasId];
+            if (inst) inst.color = color;
+
+            const toolbar = btn.parentElement;
+            toolbar.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function setSize(canvasId, size) {
+            const inst = canvasInstances[canvasId];
+            if (inst) inst.size = parseInt(size);
+        }
+
+        // =============================================
+        // TOGGLE MODES
+        // =============================================
+        function showDrawMode(qId, canvasId, btn) {
+            document.getElementById(`draw_${qId}`).style.display = 'block';
+            document.getElementById(`text_${qId}`).style.display = 'none';
+            btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function showTextMode(qId, btn) {
+            document.getElementById(`draw_${qId}`).style.display = 'none';
+            document.getElementById(`text_${qId}`).style.display = 'block';
+            btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function toggleQuestion(qId) {
+            const body = document.getElementById(`body_${qId}`);
+            body.style.display = body.style.display === 'none' ? 'block' : '';
+        }
+
+        // =============================================
+        // FULLSCREEN CANVAS
+        // =============================================
+        let fullscreenSourceId = null;
+
+        function openFullscreen(canvasId) {
+            fullscreenSourceId = canvasId;
+            const overlay = document.getElementById('fullscreenOverlay');
+            const fsCanvas = document.getElementById('fullscreenCanvas');
+            overlay.classList.add('show');
+
+            fsCanvas.width = window.innerWidth;
+            fsCanvas.height = window.innerHeight - 60;
+
+            const ctx = fsCanvas.getContext('2d');
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, fsCanvas.width, fsCanvas.height);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Copy existing content
+            const sourceInst = canvasInstances[canvasId];
+            if (sourceInst) {
+                ctx.drawImage(sourceInst.canvas, 0, 0);
+            }
+
+            canvasInstances['fullscreen'] = {
+                ctx: ctx,
+                canvas: fsCanvas,
+                drawing: false,
+                tool: 'pen',
+                color: '#000000',
+                size: 2,
+                history: [],
+                lastPoint: null
+            };
+
+            fsCanvas.onpointerdown = (e) => startDraw(e, 'fullscreen');
+            fsCanvas.onpointermove = (e) => draw(e, 'fullscreen');
+            fsCanvas.onpointerup = (e) => endDraw(e, 'fullscreen');
+            fsCanvas.ontouchstart = (e) => e.preventDefault();
+            fsCanvas.ontouchmove = (e) => e.preventDefault();
+
+            saveCanvasState('fullscreen');
+        }
+
+        function closeFullscreen() {
+            const overlay = document.getElementById('fullscreenOverlay');
+            overlay.classList.remove('show');
+
+            // Copy back to source
+            if (fullscreenSourceId && canvasInstances[fullscreenSourceId]) {
+                const sourceInst = canvasInstances[fullscreenSourceId];
+                const fsCanvas = document.getElementById('fullscreenCanvas');
+                sourceInst.ctx.clearRect(0, 0, sourceInst.canvas.width, sourceInst.canvas.height);
+                sourceInst.ctx.drawImage(fsCanvas, 0, 0, sourceInst.canvas.width, sourceInst.canvas.height);
+                saveCanvasState(fullscreenSourceId);
+                autoSaveDrawing(fullscreenSourceId);
+            }
+        }
+
+        function fullscreenUndo() { undoCanvas('fullscreen'); }
+        function fullscreenClear() {
+            const inst = canvasInstances['fullscreen'];
+            if (!inst) return;
+            inst.ctx.fillStyle = 'white';
+            inst.ctx.fillRect(0, 0, inst.canvas.width, inst.canvas.height);
+            saveCanvasState('fullscreen');
+        }
+
+        // =============================================
+        // SUBJECT NAVIGATION
+        // =============================================
+        function selectSubject(el, subject) {
+            currentSubject = subject;
+            document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+
+            if (!questionsDB[subject]) questionsDB[subject] = [];
+            renderQuestions();
+
+            // Close mobile sidebar
+            document.getElementById('sidebar').classList.remove('mobile-show');
+        }
+
+        function toggleMobileSidebar() {
+            document.getElementById('sidebar').classList.toggle('mobile-show');
+        }
+
+        // =============================================
+        // QUESTION MANAGEMENT
+        // =============================================
+        function openModal() {
+            document.getElementById('addModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('show');
+        }
+
+        function addQuestion() {
+            const title = document.getElementById('modalTitle').value.trim();
+            const text = document.getElementById('modalText').value.trim();
+            const diff = document.getElementById('modalDiff').value;
+            const bg = document.getElementById('modalBg').value;
+            const height = parseInt(document.getElementById('modalHeight').value);
+
+            if (!title || !text) {
+                alert('Veuillez remplir le titre et l\'énoncé.');
+                return;
+            }
+
+            // Parse simple formatting
+            let formattedText = text
+                .replace(/\[f\](.*?)\[\/f\]/g, '<span class="formula">$1</span>')
+                .replace(/\[h\](.*?)\[\/h\]/g, '<span class="highlight">$1</span>')
+                .replace(/\[u\](.*?)\[\/u\]/g, '<span class="unit">$1</span>')
+                .replace(/\n/g, '<br>');
+
+            const newQ = {
+                id: 'q_' + Date.now(),
+                title: title,
+                text: formattedText,
+                difficulty: diff,
+                bgType: bg,
+                canvasHeight: height,
+                status: 'todo'
+            };
+
+            if (!questionsDB[currentSubject]) questionsDB[currentSubject] = [];
+            questionsDB[currentSubject].push(newQ);
+
+            closeModal();
+            renderQuestions();
+
+            // Clear form
+            document.getElementById('modalTitle').value = '';
+            document.getElementById('modalText').value = '';
+        }
+
+        function deleteQuestion(qId) {
+            if (!confirm('Supprimer cette question ?')) return;
+            questionsDB[currentSubject] = questionsDB[currentSubject].filter(q => q.id !== qId);
+            localStorage.removeItem(`drawing_canvas_${currentSubject}_${qId}`);
+            renderQuestions();
+        }
+
+        function cycleStatus(qId) {
+            const q = questionsDB[currentSubject].find(q => q.id === qId);
+            if (!q) return;
+            if (q.status === 'todo') q.status = 'done';
+            else if (q.status === 'done') q.status = 'review';
+            else q.status = 'todo';
+            renderQuestions();
+        }
+
+        // =============================================
+        // SAVE / LOAD
+        // =============================================
+        function saveAll() {
+            // Save text answers
+            for (let subject in questionsDB) {
+                questionsDB[subject].forEach(q => {
+                    const ta = document.getElementById(`textarea_${q.id}`);
+                    if (ta) q.textAnswer = ta.value;
+                });
+            }
+            localStorage.setItem('coursDB', JSON.stringify(questionsDB));
+            alert('✅ Sauvegarde effectuée !');
+        }
+
+        function loadAll() {
+            const saved = localStorage.getItem('coursDB');
+            if (saved) {
+                questionsDB = JSON.parse(saved);
+                renderQuestions();
+                alert('📂 Données chargées !');
+            } else {
+                alert('Aucune sauvegarde trouvée.');
+            }
+        }
+
+        function clearAll() {
+            if (!confirm('⚠️ Tout effacer ? Cette action est irréversible !')) return;
+            localStorage.clear();
+            questionsDB = {};
+            initDB();
+            renderQuestions();
+        }
+
+        function exportPDF() {
+            window.print();
+        }
+
+        // =============================================
+        // RESIZE HANDLER
+        // =============================================
+        window.addEventListener('resize', () => {
+            // Resize canvases
+            for (let id in canvasInstances) {
+                if (id === 'fullscreen') continue;
+                const inst = canvasInstances[id];
+                const container = inst.canvas.parentElement;
+                if (!container) continue;
+
+                const savedData = inst.canvas.toDataURL();
+                const newWidth = container.getBoundingClientRect().width;
+
+                if (Math.abs(inst.canvas.width - newWidth) > 10) {
+                    const img = new Image();
+                    img.onload = () => {
+                        inst.canvas.width = newWidth;
+                        inst.ctx.lineCap = 'round';
+                        inst.ctx.lineJoin = 'round';
+                        inst.ctx.drawImage(img, 0, 0, newWidth, inst.canvas.height);
+                    };
+                    img.src = savedData;
+                }
+            }
+        });
+
+        // =============================================
+        // INIT
+        // =============================================
+        initDB();
+
+        // Try loading saved data
+        const saved = localStorage.getItem('coursDB');
+        if (saved) {
+            try {
+                questionsDB = JSON.parse(saved);
+                // Ensure all subjects exist
+                for (let subject in defaultQuestions) {
+                    if (!questionsDB[subject]) {
+                        questionsDB[subject] = JSON.parse(JSON.stringify(defaultQuestions[subject]));
+                    }
+                }
+            } catch(e) {
+                initDB();
+            }
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
