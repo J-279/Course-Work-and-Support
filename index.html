@@ -1,3 +1,6 @@
+Here's the updated HTML with the **edit/modify** feature fully integrated. I'll highlight what changed so you can see the additions:
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -11,11 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -90,10 +89,7 @@
             transition: all 0.3s;
         }
 
-        .chapter-tab:hover {
-            border-color: #6c63ff;
-            color: #e0e0e0;
-        }
+        .chapter-tab:hover { border-color: #6c63ff; color: #e0e0e0; }
 
         .chapter-tab.active {
             background: #6c63ff;
@@ -109,17 +105,8 @@
             padding: 25px;
         }
 
-        .chapter-title {
-            color: #6c63ff;
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
-
-        .chapter-desc {
-            color: #8888bb;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-        }
+        .chapter-title { color: #6c63ff; font-size: 1.5rem; margin-bottom: 8px; }
+        .chapter-desc { color: #8888bb; margin-bottom: 25px; font-size: 0.95rem; }
 
         /* ========== QUESTION BLOCK ========== */
         .question-block {
@@ -167,19 +154,12 @@
             flex-shrink: 0;
         }
 
-        .question-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
+        .question-title { font-size: 0.95rem; font-weight: 600; }
 
         .collapse-icon {
             color: #6c63ff;
             font-size: 1.2rem;
             transition: transform 0.3s;
-        }
-
-        .collapsed .collapse-icon {
-            transform: rotate(-90deg);
         }
 
         .question-badges {
@@ -208,13 +188,8 @@
             color: white;
         }
 
-        .question-body {
-            padding: 20px;
-        }
-
-        .question-body.hidden {
-            display: none;
-        }
+        .question-body { padding: 20px; }
+        .question-body.hidden { display: none; }
 
         /* ========== QUESTION TEXT ========== */
         .question-text {
@@ -227,13 +202,8 @@
             line-height: 1.8;
         }
 
-        .question-text .katex {
-            font-size: 1.1em;
-        }
-
-        .question-text .katex-display {
-            margin: 12px 0;
-        }
+        .question-text .katex { font-size: 1.1em; }
+        .question-text .katex-display { margin: 12px 0; }
 
         .question-hint {
             background: rgba(253, 203, 110, 0.1);
@@ -246,9 +216,7 @@
             display: none;
         }
 
-        .question-hint.show {
-            display: block;
-        }
+        .question-hint.show { display: block; }
 
         .hint-toggle {
             background: none;
@@ -262,15 +230,10 @@
             transition: all 0.3s;
         }
 
-        .hint-toggle:hover {
-            background: #fdcb6e;
-            color: #2d3436;
-        }
+        .hint-toggle:hover { background: #fdcb6e; color: #2d3436; }
 
         /* ========== ANSWER ZONE ========== */
-        .answer-zone {
-            margin-top: 15px;
-        }
+        .answer-zone { margin-top: 15px; }
 
         .answer-zone-header {
             display: flex;
@@ -281,12 +244,8 @@
             gap: 8px;
         }
 
-        .answer-zone-header h4 {
-            color: #48dbfb;
-            font-size: 0.95rem;
-        }
+        .answer-zone-header h4 { color: #48dbfb; font-size: 0.95rem; }
 
-        /* ========== ANSWER TOGGLE ========== */
         .answer-toggle {
             display: flex;
             gap: 6px;
@@ -338,16 +297,8 @@
             transition: all 0.2s;
         }
 
-        .tool-btn:hover {
-            border-color: #6c63ff;
-            background: #1a1a5e;
-        }
-
-        .tool-btn.active {
-            border-color: #6c63ff;
-            background: #6c63ff;
-            color: white;
-        }
+        .tool-btn:hover { border-color: #6c63ff; background: #1a1a5e; }
+        .tool-btn.active { border-color: #6c63ff; background: #6c63ff; color: white; }
 
         .tool-separator {
             width: 1px;
@@ -370,16 +321,8 @@
             transform: scale(1.2);
         }
 
-        .size-slider {
-            width: 70px;
-            accent-color: #6c63ff;
-        }
-
-        .size-label {
-            color: #8888bb;
-            font-size: 0.75rem;
-            min-width: 20px;
-        }
+        .size-slider { width: 70px; accent-color: #6c63ff; }
+        .size-label { color: #8888bb; font-size: 0.75rem; min-width: 20px; }
 
         /* ========== CANVAS ========== */
         .canvas-container {
@@ -422,12 +365,7 @@
             background-color: #ffffff;
         }
 
-        /* ========== BG TYPE SELECTOR ========== */
-        .bg-selector {
-            display: flex;
-            gap: 4px;
-            margin-left: auto;
-        }
+        .bg-selector { display: flex; gap: 4px; margin-left: auto; }
 
         .bg-btn {
             padding: 4px 10px;
@@ -446,11 +384,8 @@
             background: rgba(72, 219, 251, 0.1);
         }
 
-        .bg-btn:hover {
-            border-color: #48dbfb;
-        }
+        .bg-btn:hover { border-color: #48dbfb; }
 
-        /* Image upload for canvas background */
         .image-upload-zone {
             display: none;
             margin-top: 8px;
@@ -462,40 +397,16 @@
             transition: all 0.3s;
         }
 
-        .image-upload-zone:hover {
-            border-color: #6c63ff;
-        }
-
-        .image-upload-zone.show {
-            display: block;
-        }
-
-        .image-upload-zone p {
-            color: #8888bb;
-            font-size: 0.85rem;
-        }
-
-        .image-upload-zone .preview {
-            max-width: 200px;
-            max-height: 100px;
-            margin-top: 8px;
-            border-radius: 6px;
-        }
+        .image-upload-zone:hover { border-color: #6c63ff; }
+        .image-upload-zone.show { display: block; }
+        .image-upload-zone p { color: #8888bb; font-size: 0.85rem; }
+        .image-upload-zone .preview { max-width: 200px; max-height: 100px; margin-top: 8px; border-radius: 6px; }
 
         /* ========== TEXT ANSWER WITH LATEX ========== */
-        .text-answer-container {
-            display: none;
-        }
+        .text-answer-container { display: none; }
+        .text-answer-container.show { display: block; }
 
-        .text-answer-container.show {
-            display: block;
-        }
-
-        .latex-editor {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .latex-editor { display: flex; flex-direction: column; gap: 10px; }
 
         .latex-toolbar {
             display: flex;
@@ -518,26 +429,11 @@
             transition: all 0.2s;
         }
 
-        .latex-btn:hover {
-            background: #1a1a5e;
-            border-color: #48dbfb;
-        }
+        .latex-btn:hover { background: #1a1a5e; border-color: #48dbfb; }
+        .latex-btn .label { font-family: 'Segoe UI', sans-serif; color: #8888bb; font-size: 0.7rem; display: block; }
 
-        .latex-btn .label {
-            font-family: 'Segoe UI', sans-serif;
-            color: #8888bb;
-            font-size: 0.7rem;
-            display: block;
-        }
-
-        .editor-split {
-            display: flex;
-            gap: 12px;
-        }
-
-        .editor-split > div {
-            flex: 1;
-        }
+        .editor-split { display: flex; gap: 12px; }
+        .editor-split > div { flex: 1; }
 
         .editor-input-label {
             color: #8888bb;
@@ -563,10 +459,7 @@
             transition: border-color 0.3s;
         }
 
-        .text-answer:focus {
-            outline: none;
-            border-color: #6c63ff;
-        }
+        .text-answer:focus { outline: none; border-color: #6c63ff; }
 
         .latex-preview {
             min-height: 150px;
@@ -580,11 +473,8 @@
             overflow-y: auto;
         }
 
-        .latex-preview .katex {
-            font-size: 1.1em;
-        }
+        .latex-preview .katex { font-size: 1.1em; }
 
-        /* Image insert for text answer */
         .image-insert-bar {
             display: flex;
             gap: 8px;
@@ -603,10 +493,7 @@
             transition: all 0.3s;
         }
 
-        .image-insert-btn:hover {
-            background: #1a1a5e;
-            border-color: #48dbfb;
-        }
+        .image-insert-btn:hover { background: #1a1a5e; border-color: #48dbfb; }
 
         .inserted-images {
             display: flex;
@@ -624,22 +511,16 @@
             border: 2px solid #2a2a6e;
         }
 
-        .inserted-image-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .inserted-image-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
         .inserted-image-thumb .remove-img {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 2px; right: 2px;
             background: #e74c3c;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             cursor: pointer;
             font-size: 0.7rem;
             display: flex;
@@ -669,6 +550,24 @@
         .status-done { background: #00b894; color: white; border: 1px solid #00b894; }
         .status-review { background: #fdcb6e; color: #2d3436; border: 1px solid #fdcb6e; }
 
+        .status-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .edit-btn {
+            background: none;
+            border: 1px solid #6c63ff;
+            color: #6c63ff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .edit-btn:hover { background: #6c63ff; color: white; }
+
         .delete-btn {
             background: none;
             border: 1px solid #e74c3c;
@@ -680,10 +579,7 @@
             transition: all 0.3s;
         }
 
-        .delete-btn:hover {
-            background: #e74c3c;
-            color: white;
-        }
+        .delete-btn:hover { background: #e74c3c; color: white; }
 
         /* ========== ADD QUESTION BTN ========== */
         .add-question-btn {
@@ -716,9 +612,7 @@
             align-items: center;
         }
 
-        .modal-overlay.show {
-            display: flex;
-        }
+        .modal-overlay.show { display: flex; }
 
         .modal {
             background: #12124a;
@@ -731,10 +625,7 @@
             overflow-y: auto;
         }
 
-        .modal h2 {
-            color: #6c63ff;
-            margin-bottom: 20px;
-        }
+        .modal h2 { color: #6c63ff; margin-bottom: 20px; }
 
         .modal label {
             display: block;
@@ -781,14 +672,8 @@
 
         .modal-preview .katex { font-size: 1.1em; }
 
-        .modal-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .modal-row > div {
-            flex: 1;
-        }
+        .modal-row { display: flex; gap: 12px; }
+        .modal-row > div { flex: 1; }
 
         .latex-help {
             background: #0a0a35;
@@ -798,26 +683,10 @@
             margin-bottom: 12px;
         }
 
-        .latex-help h4 {
-            color: #fdcb6e;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-
-        .latex-help table {
-            width: 100%;
-            font-size: 0.8rem;
-        }
-
-        .latex-help td {
-            padding: 3px 8px;
-            border-bottom: 1px solid #1a1a5e;
-        }
-
-        .latex-help td:first-child {
-            font-family: 'Courier New', monospace;
-            color: #48dbfb;
-        }
+        .latex-help h4 { color: #fdcb6e; font-size: 0.85rem; margin-bottom: 8px; }
+        .latex-help table { width: 100%; font-size: 0.8rem; }
+        .latex-help td { padding: 3px 8px; border-bottom: 1px solid #1a1a5e; }
+        .latex-help td:first-child { font-family: 'Courier New', monospace; color: #48dbfb; }
 
         .modal-actions {
             display: flex;
@@ -839,6 +708,23 @@
         .btn-save:hover { background: #5a52e0; }
         .btn-cancel { background: #2d3436; color: #e0e0e0; }
 
+        /* ========== EDIT MODE INDICATOR ========== */
+        .edit-mode-banner {
+            display: none;
+            background: linear-gradient(135deg, #e17055, #d63031);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-mode-banner.show {
+            display: flex;
+        }
+
         /* ========== FULLSCREEN CANVAS ========== */
         .fullscreen-overlay {
             display: none;
@@ -850,9 +736,7 @@
             flex-direction: column;
         }
 
-        .fullscreen-overlay.show {
-            display: flex;
-        }
+        .fullscreen-overlay.show { display: flex; }
 
         .fullscreen-toolbar {
             background: #12124a;
@@ -874,20 +758,10 @@
             transition: all 0.3s;
         }
 
-        .fullscreen-toolbar button:hover {
-            background: #6c63ff;
-            color: white;
-        }
+        .fullscreen-toolbar button:hover { background: #6c63ff; color: white; }
 
-        .fullscreen-canvas-wrap {
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .fullscreen-canvas-wrap canvas {
-            display: block;
-            touch-action: none;
-        }
+        .fullscreen-canvas-wrap { flex: 1; overflow: hidden; }
+        .fullscreen-canvas-wrap canvas { display: block; touch-action: none; }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
@@ -930,10 +804,15 @@
     <!-- CONTENT -->
     <div class="content" id="content"></div>
 
-    <!-- MODAL : Add/Edit Question -->
+    <!-- MODAL : Add / Edit Question -->
     <div class="modal-overlay" id="addModal">
         <div class="modal">
-            <h2>➕ Nouvelle Question</h2>
+            <!-- ✨ NEW: Edit mode banner -->
+            <div class="edit-mode-banner" id="editBanner">
+                ✏️ <strong>Mode Édition</strong> — Vous modifiez une question existante. Les réponses des élèves seront conservées.
+            </div>
+
+            <h2 id="modalTitleHeading">➕ Nouvelle Question</h2>
 
             <label>Titre de la question</label>
             <input type="text" id="modalTitle" placeholder="Ex: Loi de Newton, Énergie cinétique...">
@@ -1003,14 +882,15 @@
 
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-                <button class="btn-save" onclick="addQuestion()">✅ Ajouter</button>
+                <!-- ✨ CHANGED: Button text is now dynamic -->
+                <button class="btn-save" id="modalSaveBtn" onclick="saveQuestion()">✅ Ajouter</button>
             </div>
         </div>
     </div>
 
     <!-- FULLSCREEN CANVAS -->
     <div class="fullscreen-overlay" id="fullscreenOverlay">
-        <div class="fullscreen-toolbar" id="fullscreenToolbar">
+        <div class="fullscreen-toolbar">
             <button onclick="closeFullscreen()">✕ Fermer</button>
             <button onclick="fsUndo()">↩️ Annuler</button>
             <button onclick="fsClear()">🗑️ Effacer</button>
@@ -1041,6 +921,10 @@
         let currentChapter = 'chap1';
         let canvasInstances = {};
 
+        // ✨ NEW: Modal mode tracking
+        let modalMode = 'create';   // 'create' or 'edit'
+        let editingQId = null;       // ID of question being edited
+
         const chapters = [
             { id: 'chap1', name: 'Mécanique', icon: '🔧' },
             { id: 'chap2', name: 'Énergie', icon: '⚡' },
@@ -1065,7 +949,8 @@
                     canvasHeight: 350,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 },
                 {
                     id: 'q2',
@@ -1078,7 +963,8 @@
                     canvasHeight: 300,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 }
             ],
             chap2: [
@@ -1093,7 +979,8 @@
                     canvasHeight: 350,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 }
             ],
             chap3: [
@@ -1108,7 +995,8 @@
                     canvasHeight: 300,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 }
             ],
             chap4: [
@@ -1123,7 +1011,8 @@
                     canvasHeight: 250,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 }
             ],
             chap5: [
@@ -1138,7 +1027,8 @@
                     canvasHeight: 300,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 }
             ],
             chap6: [
@@ -1153,7 +1043,8 @@
                     canvasHeight: 350,
                     status: 'todo',
                     textAnswer: '',
-                    images: []
+                    images: [],
+                    bgImage: null
                 }
             ]
         };
@@ -1166,7 +1057,6 @@
             if (saved) {
                 try { questionsDB = JSON.parse(saved); } catch(e) {}
             }
-            // Fill missing chapters
             for (let ch in defaultQuestions) {
                 if (!questionsDB[ch]) {
                     questionsDB[ch] = JSON.parse(JSON.stringify(defaultQuestions[ch]));
@@ -1319,7 +1209,7 @@
                                         <div>
                                             <div class="editor-input-label">⌨️ Écriture (LaTeX + texte)</div>
                                             <textarea class="text-answer" id="ta_${q.id}"
-                                                placeholder="Tapez votre réponse...&#10;Utilisez $...$ pour les formules.&#10;&#10;Ex: La force est $F = m \\times a = 5 \\times 2.5 = 12.5$ N"
+                                                placeholder="Tapez votre réponse...&#10;Utilisez $...$ pour les formules."
                                                 oninput="livePreview('${q.id}')">${q.textAnswer || ''}</textarea>
                                         </div>
                                         <div>
@@ -1346,9 +1236,13 @@
                             </div>
                         </div>
 
+                        <!-- ✨ CHANGED: Added edit button in status bar -->
                         <div class="status-bar">
                             <span class="status-badge ${stClass}" onclick="cycleStatus('${q.id}')">${stText}</span>
-                            <button class="delete-btn" onclick="deleteQuestion('${q.id}')">🗑️ Supprimer</button>
+                            <div class="status-actions">
+                                <button class="edit-btn" onclick="editQuestion('${q.id}')">✏️ Modifier</button>
+                                <button class="delete-btn" onclick="deleteQuestion('${q.id}')">🗑️ Supprimer</button>
+                            </div>
                         </div>
                     </div>
                 </div>`;
@@ -1358,14 +1252,12 @@
 
             content.innerHTML = html;
 
-            // Render KaTeX in all question texts and hints
             questions.forEach(q => {
                 renderKaTeX(`qtext_${q.id}`);
                 if (q.hint) renderKaTeX(`hint_${q.id}`);
                 if (q.textAnswer) livePreview(q.id);
             });
 
-            // Init canvases
             questions.forEach(q => {
                 const cid = `c_${currentChapter}_${q.id}`;
                 setTimeout(() => initCanvas(cid), 50);
@@ -1392,22 +1284,19 @@
         }
 
         // =============================================
-        // LIVE LATEX PREVIEW (text answer)
+        // LIVE LATEX PREVIEW
         // =============================================
         function livePreview(qId) {
             const ta = document.getElementById(`ta_${qId}`);
             const preview = document.getElementById(`preview_${qId}`);
             if (!ta || !preview) return;
 
-            let val = ta.value;
-            // Convert newlines to <br>
-            let html = val.replace(/\n/g, '<br>');
+            let html = ta.value.replace(/\n/g, '<br>');
             preview.innerHTML = html || '<em style="color:#aaa;">Le rendu apparaîtra ici...</em>';
             renderKaTeX(`preview_${qId}`);
 
-            // Save
             const q = findQuestion(qId);
-            if (q) q.textAnswer = val;
+            if (q) q.textAnswer = ta.value;
         }
 
         function insertLatex(qId, snippet, cursorBack) {
@@ -1424,23 +1313,82 @@
         }
 
         // =============================================
-        // MODAL
+        // MODAL — CREATE & EDIT ✨
         // =============================================
+
+        // Open modal in CREATE mode
         function openModal() {
-            document.getElementById('addModal').classList.add('show');
+            modalMode = 'create';
+            editingQId = null;
+
+            document.getElementById('modalTitleHeading').textContent = '➕ Nouvelle Question';
+            document.getElementById('modalSaveBtn').textContent = '✅ Ajouter';
+            document.getElementById('editBanner').classList.remove('show');
+
+            // Clear all fields
+            document.getElementById('modalTitle').value = '';
+            document.getElementById('modalText').value = '';
+            document.getElementById('modalHint').value = '';
+            document.getElementById('modalDiff').value = 'moyen';
+            document.getElementById('modalPoints').value = '4';
+            document.getElementById('modalBg').value = 'grid';
+            document.getElementById('modalHeight').value = '300';
+            document.getElementById('modalPreview').innerHTML = '<em style="color:#aaa;">L\'aperçu apparaîtra ici...</em>';
+
             // Fill chapter selector
             const sel = document.getElementById('modalChapter');
             sel.innerHTML = chapters.map(ch =>
                 `<option value="${ch.id}" ${ch.id === currentChapter ? 'selected' : ''}>${ch.icon} ${ch.name}</option>`
             ).join('');
-            document.getElementById('modalTitle').value = '';
-            document.getElementById('modalText').value = '';
-            document.getElementById('modalHint').value = '';
-            document.getElementById('modalPreview').innerHTML = '<em style="color:#aaa;">L\'aperçu apparaîtra ici...</em>';
+
+            document.getElementById('addModal').classList.add('show');
+        }
+
+        // ✨ NEW: Open modal in EDIT mode
+        function editQuestion(qId) {
+            const q = findQuestion(qId);
+            if (!q) return;
+
+            modalMode = 'edit';
+            editingQId = qId;
+
+            document.getElementById('modalTitleHeading').textContent = '✏️ Modifier la Question';
+            document.getElementById('modalSaveBtn').textContent = '💾 Sauvegarder les modifications';
+            document.getElementById('editBanner').classList.add('show');
+
+            // Pre-fill all fields with existing data
+            document.getElementById('modalTitle').value = q.title;
+            document.getElementById('modalText').value = q.text;
+            document.getElementById('modalHint').value = q.hint || '';
+            document.getElementById('modalDiff').value = q.difficulty;
+            document.getElementById('modalPoints').value = q.points;
+            document.getElementById('modalBg').value = q.bgType || 'grid';
+            document.getElementById('modalHeight').value = q.canvasHeight || 300;
+
+            // Find which chapter this question belongs to
+            let qChapter = currentChapter;
+            for (let ch in questionsDB) {
+                if (questionsDB[ch].some(x => x.id === qId)) {
+                    qChapter = ch;
+                    break;
+                }
+            }
+
+            const sel = document.getElementById('modalChapter');
+            sel.innerHTML = chapters.map(ch =>
+                `<option value="${ch.id}" ${ch.id === qChapter ? 'selected' : ''}>${ch.icon} ${ch.name}</option>`
+            ).join('');
+
+            // Show preview
+            previewModal();
+
+            document.getElementById('addModal').classList.add('show');
         }
 
         function closeModal() {
             document.getElementById('addModal').classList.remove('show');
+            modalMode = 'create';
+            editingQId = null;
         }
 
         function previewModal() {
@@ -1450,7 +1398,8 @@
             renderKaTeX('modalPreview');
         }
 
-        function addQuestion() {
+        // ✨ CHANGED: Unified save function (handles both create and edit)
+        function saveQuestion() {
             const title = document.getElementById('modalTitle').value.trim();
             const text = document.getElementById('modalText').value.trim();
             const hint = document.getElementById('modalHint').value.trim();
@@ -1465,22 +1414,49 @@
                 return;
             }
 
-            const newQ = {
-                id: 'q_' + Date.now(),
-                title, text, hint,
-                difficulty: diff,
-                points,
-                bgType: bg,
-                canvasHeight: height,
-                status: 'todo',
-                textAnswer: '',
-                images: [],
-                bgImage: null
-            };
+            if (modalMode === 'edit' && editingQId) {
+                // ===== EDIT MODE: Update existing question =====
+                const q = findQuestion(editingQId);
+                if (q) {
+                    q.title = title;
+                    q.text = text;
+                    q.hint = hint;
+                    q.difficulty = diff;
+                    q.points = points;
+                    q.bgType = bg;
+                    q.canvasHeight = height;
+                    // ✨ PRESERVED: status, textAnswer, images, bgImage are NOT touched
+                }
 
-            if (!questionsDB[chap]) questionsDB[chap] = [];
-            questionsDB[chap].push(newQ);
-            currentChapter = chap;
+                // If chapter changed, move the question
+                if (chap !== currentChapter) {
+                    // Remove from old chapter
+                    questionsDB[currentChapter] = (questionsDB[currentChapter] || []).filter(q => q.id !== editingQId);
+                    // Add to new chapter
+                    if (!questionsDB[chap]) questionsDB[chap] = [];
+                    if (q) questionsDB[chap].push(q);
+                    currentChapter = chap;
+                }
+
+            } else {
+                // ===== CREATE MODE: Add new question =====
+                const newQ = {
+                    id: 'q_' + Date.now(),
+                    title, text, hint,
+                    difficulty: diff,
+                    points,
+                    bgType: bg,
+                    canvasHeight: height,
+                    status: 'todo',
+                    textAnswer: '',
+                    images: [],
+                    bgImage: null
+                };
+
+                if (!questionsDB[chap]) questionsDB[chap] = [];
+                questionsDB[chap].push(newQ);
+                currentChapter = chap;
+            }
 
             closeModal();
             renderChapterTabs();
@@ -1491,8 +1467,16 @@
         // QUESTION ACTIONS
         // =============================================
         function findQuestion(qId) {
+            // Search in current chapter first
             const qs = questionsDB[currentChapter] || [];
-            return qs.find(q => q.id === qId);
+            let found = qs.find(q => q.id === qId);
+            if (found) return found;
+            // Search all chapters (for edit mode)
+            for (let ch in questionsDB) {
+                found = questionsDB[ch].find(q => q.id === qId);
+                if (found) return found;
+            }
+            return null;
         }
 
         function toggleBody(qId) {
@@ -1503,8 +1487,7 @@
         }
 
         function toggleHint(qId) {
-            const hint = document.getElementById(`hint_${qId}`);
-            hint.classList.toggle('show');
+            document.getElementById(`hint_${qId}`).classList.toggle('show');
         }
 
         function showMode(qId, mode, btn) {
@@ -1549,16 +1532,11 @@
             ctx.lineJoin = 'round';
 
             canvasInstances[canvasId] = {
-                ctx, canvas,
-                drawing: false,
-                tool: 'pen',
-                color: '#000000',
-                size: 2,
-                history: [],
-                lastPoint: null
+                ctx, canvas, drawing: false,
+                tool: 'pen', color: '#000000', size: 2,
+                history: [], lastPoint: null
             };
 
-            // Restore
             const saved = localStorage.getItem(`drawing_${canvasId}`);
             if (saved) {
                 const img = new Image();
@@ -1571,371 +1549,4 @@
             canvas.addEventListener('pointerdown', e => pStart(e, canvasId));
             canvas.addEventListener('pointermove', e => pMove(e, canvasId));
             canvas.addEventListener('pointerup', e => pEnd(e, canvasId));
-            canvas.addEventListener('pointerleave', e => pEnd(e, canvasId));
-            canvas.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
-            canvas.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-        }
-
-        function getPos(e, id) {
-            const inst = canvasInstances[id];
-            const r = inst.canvas.getBoundingClientRect();
-            const sx = inst.canvas.width / r.width;
-            const sy = inst.canvas.height / r.height;
-            return {
-                x: (e.clientX - r.left) * sx,
-                y: (e.clientY - r.top) * sy,
-                p: e.pressure || 0.5
-            };
-        }
-
-        function pStart(e, id) {
-            const inst = canvasInstances[id];
-            inst.drawing = true;
-            inst.lastPoint = getPos(e, id);
-        }
-
-        function pMove(e, id) {
-            const inst = canvasInstances[id];
-            if (!inst.drawing) return;
-            const pos = getPos(e, id);
-            const ctx = inst.ctx;
-
-            ctx.beginPath();
-            ctx.moveTo(inst.lastPoint.x, inst.lastPoint.y);
-            ctx.lineTo(pos.x, pos.y);
-
-            if (inst.tool === 'pen') {
-                ctx.globalAlpha = 1;
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = inst.color;
-                ctx.lineWidth = inst.size * (0.5 + pos.p);
-            } else if (inst.tool === 'highlighter') {
-                ctx.globalAlpha = 0.25;
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = inst.color;
-                ctx.lineWidth = inst.size * 6;
-            } else if (inst.tool === 'eraser') {
-                ctx.globalAlpha = 1;
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.strokeStyle = 'rgba(0,0,0,1)';
-                ctx.lineWidth = inst.size * 5;
-            }
-
-            ctx.stroke();
-            inst.lastPoint = pos;
-        }
-
-        function pEnd(e, id) {
-            const inst = canvasInstances[id];
-            if (!inst || !inst.drawing) return;
-            inst.drawing = false;
-            inst.ctx.globalAlpha = 1;
-            inst.ctx.globalCompositeOperation = 'source-over';
-            saveState(id);
-            autoSave(id);
-        }
-
-        function saveState(id) {
-            const inst = canvasInstances[id];
-            if (!inst) return;
-            inst.history.push(inst.canvas.toDataURL());
-            if (inst.history.length > 30) inst.history.shift();
-        }
-
-        function undoCanvas(id) {
-            const inst = canvasInstances[id];
-            if (!inst || inst.history.length < 2) return;
-            inst.history.pop();
-            const prev = inst.history[inst.history.length - 1];
-            const img = new Image();
-            img.onload = () => {
-                inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
-                inst.ctx.drawImage(img, 0, 0);
-                autoSave(id);
-            };
-            img.src = prev;
-        }
-
-        function clearCanvas(id) {
-            const inst = canvasInstances[id];
-            if (!inst) return;
-            if (!confirm('Effacer tout ?')) return;
-            inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
-            saveState(id);
-            autoSave(id);
-        }
-
-        function autoSave(id) {
-            const inst = canvasInstances[id];
-            if (!inst) return;
-            try { localStorage.setItem(`drawing_${id}`, inst.canvas.toDataURL()); } catch(e) {}
-        }
-
-        function setTool(id, tool, btn) {
-            const inst = canvasInstances[id];
-            if (inst) inst.tool = tool;
-            const toolbar = btn.closest('.drawing-tools');
-            toolbar.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function setColor(id, color, btn) {
-            const inst = canvasInstances[id];
-            if (inst) inst.color = color;
-            const toolbar = btn.closest('.drawing-tools');
-            toolbar.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function setStrokeSize(id, val, slider) {
-            const inst = canvasInstances[id];
-            if (inst) inst.size = parseInt(val);
-            const lbl = document.getElementById(`sizelbl_${id}`);
-            if (lbl) lbl.textContent = val;
-        }
-
-        // =============================================
-        // CANVAS BACKGROUND
-        // =============================================
-        function setBg(cid, qId, bgType, btn) {
-            const q = findQuestion(qId);
-            if (q) q.bgType = bgType;
-
-            btn.parentElement.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const container = document.getElementById(`container_${cid}`);
-            container.className = 'canvas-container';
-            if (bgType === 'image') {
-                container.classList.add('image-bg');
-                if (q && q.bgImage) {
-                    container.style.backgroundImage = `url('${q.bgImage}')`;
-                }
-            } else {
-                container.classList.add(bgType);
-                container.style.backgroundImage = '';
-            }
-
-            // Show/hide image upload
-            const upzone = document.getElementById(`imgup_${cid}`);
-            if (upzone) {
-                upzone.classList.toggle('show', bgType === 'image');
-            }
-        }
-
-        function triggerBgUpload(cid, qId) {
-            const input = document.getElementById('globalFileInput');
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const dataUrl = ev.target.result;
-                    const q = findQuestion(qId);
-                    if (q) q.bgImage = dataUrl;
-
-                    const container = document.getElementById(`container_${cid}`);
-                    container.style.backgroundImage = `url('${dataUrl}')`;
-                    container.className = 'canvas-container image-bg';
-
-                    const upzone = document.getElementById(`imgup_${cid}`);
-                    upzone.innerHTML = `<p>📁 Cliquez pour changer l'image</p><img class="preview" src="${dataUrl}">`;
-                };
-                reader.readAsDataURL(file);
-                input.value = '';
-            };
-            input.click();
-        }
-
-        // =============================================
-        // TEXT ANSWER IMAGE INSERT
-        // =============================================
-        function triggerTextImage(qId) {
-            const input = document.getElementById('textImageInput');
-            input.onchange = (e) => {
-                const files = e.target.files;
-                if (!files.length) return;
-                const q = findQuestion(qId);
-                if (!q) return;
-                if (!q.images) q.images = [];
-
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        q.images.push(ev.target.result);
-                        renderInsertedImages(qId);
-                    };
-                    reader.readAsDataURL(file);
-                });
-                input.value = '';
-            };
-            input.click();
-        }
-
-        function renderInsertedImages(qId) {
-            const q = findQuestion(qId);
-            const container = document.getElementById(`imgs_${qId}`);
-            if (!q || !container) return;
-            container.innerHTML = (q.images || []).map((img, i) => `
-                <div class="inserted-image-thumb">
-                    <img src="${img}">
-                    <button class="remove-img" onclick="removeImage('${qId}', ${i})">✕</button>
-                </div>
-            `).join('');
-        }
-
-        function removeImage(qId, index) {
-            const q = findQuestion(qId);
-            if (!q) return;
-            q.images.splice(index, 1);
-            renderInsertedImages(qId);
-        }
-
-        // =============================================
-        // FULLSCREEN
-        // =============================================
-        let fsSourceId = null;
-
-        function openFullscreen(cid) {
-            fsSourceId = cid;
-            const overlay = document.getElementById('fullscreenOverlay');
-            const fsCanvas = document.getElementById('fullscreenCanvas');
-            overlay.classList.add('show');
-
-            fsCanvas.width = window.innerWidth;
-            fsCanvas.height = window.innerHeight - 60;
-
-            const ctx = fsCanvas.getContext('2d');
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, fsCanvas.width, fsCanvas.height);
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            const src = canvasInstances[cid];
-            if (src) ctx.drawImage(src.canvas, 0, 0);
-
-            canvasInstances['fs'] = {
-                ctx, canvas: fsCanvas,
-                drawing: false, tool: 'pen',
-                color: '#000000', size: 2,
-                history: [], lastPoint: null
-            };
-            saveState('fs');
-
-            fsCanvas.onpointerdown = e => pStart(e, 'fs');
-            fsCanvas.onpointermove = e => pMove(e, 'fs');
-            fsCanvas.onpointerup = e => pEnd(e, 'fs');
-            fsCanvas.ontouchstart = e => e.preventDefault();
-            fsCanvas.ontouchmove = e => e.preventDefault();
-        }
-
-        function closeFullscreen() {
-            document.getElementById('fullscreenOverlay').classList.remove('show');
-            if (fsSourceId && canvasInstances[fsSourceId]) {
-                const src = canvasInstances[fsSourceId];
-                const fsCanvas = document.getElementById('fullscreenCanvas');
-                src.ctx.clearRect(0, 0, src.canvas.width, src.canvas.height);
-                src.ctx.drawImage(fsCanvas, 0, 0, src.canvas.width, src.canvas.height);
-                saveState(fsSourceId);
-                autoSave(fsSourceId);
-            }
-        }
-
-        function fsUndo() { undoCanvas('fs'); }
-        function fsClear() {
-            const inst = canvasInstances['fs'];
-            if (!inst) return;
-            inst.ctx.fillStyle = 'white';
-            inst.ctx.fillRect(0, 0, inst.canvas.width, inst.canvas.height);
-            saveState('fs');
-        }
-        function fsTool(t) {
-            const inst = canvasInstances['fs'];
-            if (inst) inst.tool = t;
-            ['pen','hl','er'].forEach(x => {
-                const el = document.getElementById(`fs_${x}`);
-                if(el) el.classList.remove('active');
-            });
-            const map = {pen:'pen',highlighter:'hl',eraser:'er'};
-            const el = document.getElementById(`fs_${map[t]}`);
-            if(el) el.classList.add('active');
-        }
-        function fsColor(c, btn) {
-            const inst = canvasInstances['fs'];
-            if (inst) inst.color = c;
-            btn.parentElement.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-        function fsSize(v) {
-            const inst = canvasInstances['fs'];
-            if (inst) inst.size = parseInt(v);
-        }
-
-        // =============================================
-        // SAVE / LOAD / CLEAR
-        // =============================================
-        function saveAll() {
-            // Capture text answers
-            for (let ch in questionsDB) {
-                (questionsDB[ch] || []).forEach(q => {
-                    const ta = document.getElementById(`ta_${q.id}`);
-                    if (ta) q.textAnswer = ta.value;
-                });
-            }
-            localStorage.setItem('pc_questionsDB', JSON.stringify(questionsDB));
-            alert('✅ Sauvegarde effectuée !');
-        }
-
-        function loadAll() {
-            const saved = localStorage.getItem('pc_questionsDB');
-            if (saved) {
-                questionsDB = JSON.parse(saved);
-                renderQuestions();
-                alert('📂 Données chargées !');
-            } else {
-                alert('Aucune sauvegarde trouvée.');
-            }
-        }
-
-        function clearAllData() {
-            if (!confirm('⚠️ Tout effacer ? Irréversible !')) return;
-            localStorage.clear();
-            questionsDB = {};
-            for (let ch in defaultQuestions) {
-                questionsDB[ch] = JSON.parse(JSON.stringify(defaultQuestions[ch]));
-            }
-            renderQuestions();
-        }
-
-        function exportPDF() { window.print(); }
-
-        // =============================================
-        // RESIZE
-        // =============================================
-        window.addEventListener('resize', () => {
-            for (let id in canvasInstances) {
-                if (id === 'fs') continue;
-                const inst = canvasInstances[id];
-                if (!inst || !inst.canvas.parentElement) continue;
-                const saved = inst.canvas.toDataURL();
-                const nw = inst.canvas.parentElement.getBoundingClientRect().width - 4;
-                if (Math.abs(inst.canvas.width - nw) > 10) {
-                    const img = new Image();
-                    img.onload = () => {
-                        inst.canvas.width = nw;
-                        inst.ctx.lineCap = 'round';
-                        inst.ctx.lineJoin = 'round';
-                        inst.ctx.drawImage(img, 0, 0, nw, inst.canvas.height);
-                    };
-                    img.src = saved;
-                }
-            }
-        });
-
-        // =============================================
-        // START
-        // =============================================
-        init();
-    </script>
-</body>
-</html>
+            canvas.addEventListener('pointerleave', e
