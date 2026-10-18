@@ -1543,7 +1543,376 @@
                 saveState(canvasId);
             }
 
-            canvas.addEventListener('pointerdown', e => pStart(e, canvasId));
+                        canvas.addEventListener('pointerdown', e => pStart(e, canvasId));
             canvas.addEventListener('pointermove', e => pMove(e, canvasId));
             canvas.addEventListener('pointerup', e => pEnd(e, canvasId));
-            canvas.addEventListener('pointerleave', e
+            canvas.addEventListener('pointerleave', e => pEnd(e, canvasId));
+            canvas.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+            canvas.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+        }
+
+        function getPos(e, id) {
+            const inst = canvasInstances[id];
+            const r = inst.canvas.getBoundingClientRect();
+            const sx = inst.canvas.width / r.width;
+            const sy = inst.canvas.height / r.height;
+            return {
+                x: (e.clientX - r.left) * sx,
+                y: (e.clientY - r.top) * sy,
+                p: e.pressure || 0.5
+            };
+        }
+
+        function pStart(e, id) {
+            const inst = canvasInstances[id];
+            inst.drawing = true;
+            inst.lastPoint = getPos(e, id);
+        }
+
+        function pMove(e, id) {
+            const inst = canvasInstances[id];
+            if (!inst.drawing) return;
+            const pos = getPos(e, id);
+            const ctx = inst.ctx;
+
+            ctx.beginPath();
+            ctx.moveTo(inst.lastPoint.x, inst.lastPoint.y);
+            ctx.lineTo(pos.x, pos.y);
+
+            if (inst.tool === 'pen') {
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = inst.color;
+                ctx.lineWidth = inst.size * (0.5 + pos.p);
+            } else if (inst.tool === 'highlighter') {
+                ctx.globalAlpha = 0.25;
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = inst.color;
+                ctx.lineWidth = inst.size * 6;
+            } else if (inst.tool === 'eraser') {
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.strokeStyle = 'rgba(0,0,0,1)';
+                ctx.lineWidth = inst.size * 5;
+            }
+
+            ctx.stroke();
+            inst.lastPoint = pos;
+        }
+
+        function pEnd(e, id) {
+            const inst = canvasInstances[id];
+            if (!inst || !inst.drawing) return;
+            inst.drawing = false;
+            inst.ctx.globalAlpha = 1;
+            inst.ctx.globalCompositeOperation = 'source-over';
+            saveState(id);
+            autoSave(id);
+        }
+
+        function saveState(id) {
+            const inst = canvasInstances[id];
+            if (!inst) return;
+            inst.history.push(inst.canvas.toDataURL());
+            if (inst.history.length > 30) inst.history.shift();
+        }
+
+        function undoCanvas(id) {
+            const inst = canvasInstances[id];
+            if (!inst || inst.history.length < 2) return;
+            inst.history.pop();
+            const prev = inst.history[inst.history.length - 1];
+            const img = new Image();
+            img.onload = () => {
+                inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
+                inst.ctx.drawImage(img, 0, 0);
+                autoSave(id);
+            };
+            img.src = prev;
+        }
+
+        function clearCanvas(id) {
+            const inst = canvasInstances[id];
+            if (!inst) return;
+            if (!confirm('Effacer tout ?')) return;
+            inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
+            saveState(id);
+            autoSave(id);
+        }
+
+        function autoSave(id) {
+            const inst = canvasInstances[id];
+            if (!inst) return;
+            try { localStorage.setItem(`drawing_${id}`, inst.canvas.toDataURL()); } catch(e) {}
+        }
+
+        function setTool(id, tool, btn) {
+            const inst = canvasInstances[id];
+            if (inst) inst.tool = tool;
+            const toolbar = btn.closest('.drawing-tools');
+            toolbar.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function setColor(id, color, btn) {
+            const inst = canvasInstances[id];
+            if (inst) inst.color = color;
+            const toolbar = btn.closest('.drawing-tools');
+            toolbar.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function setStrokeSize(id, val, slider) {
+            const inst = canvasInstances[id];
+            if (inst) inst.size = parseInt(val);
+            const lbl = document.getElementById(`sizelbl_${id}`);
+            if (lbl) lbl.textContent = val;
+        }
+
+        // =============================================
+        // CANVAS BACKGROUND
+        // =============================================
+        function setBg(cid, qId, bgType, btn) {
+            const q = findQuestion(qId);
+            if (q) q.bgType = bgType;
+
+            btn.parentElement.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const container = document.getElementById(`container_${cid}`);
+            container.className = 'canvas-container';
+            if (bgType === 'image') {
+                container.classList.add('image-bg');
+                if (q && q.bgImage) {
+                    container.style.backgroundImage = `url('${q.bgImage}')`;
+                }
+            } else {
+                if (bgType !== 'blank') container.classList.add(bgType);
+                container.style.backgroundImage = '';
+            }
+
+            const upzone = document.getElementById(`imgup_${cid}`);
+            if (upzone) upzone.classList.toggle('show', bgType === 'image');
+        }
+
+        function triggerBgUpload(cid, qId) {
+            const input = document.getElementById('globalFileInput');
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    const q = findQuestion(qId);
+                    if (q) q.bgImage = dataUrl;
+
+                    const container = document.getElementById(`container_${cid}`);
+                    container.style.backgroundImage = `url('${dataUrl}')`;
+                    container.className = 'canvas-container image-bg';
+
+                    const upzone = document.getElementById(`imgup_${cid}`);
+                    upzone.innerHTML = `<p>📁 Cliquez pour changer l'image</p><img class="preview" src="${dataUrl}">`;
+                };
+                reader.readAsDataURL(file);
+                input.value = '';
+            };
+            input.click();
+        }
+
+        // =============================================
+        // TEXT ANSWER IMAGE INSERT
+        // =============================================
+        function triggerTextImage(qId) {
+            const input = document.getElementById('textImageInput');
+            input.onchange = (e) => {
+                const files = e.target.files;
+                if (!files.length) return;
+                const q = findQuestion(qId);
+                if (!q) return;
+                if (!q.images) q.images = [];
+
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        q.images.push(ev.target.result);
+                        renderInsertedImages(qId);
+                    };
+                    reader.readAsDataURL(file);
+                });
+                input.value = '';
+            };
+            input.click();
+        }
+
+        function renderInsertedImages(qId) {
+            const q = findQuestion(qId);
+            const container = document.getElementById(`imgs_${qId}`);
+            if (!q || !container) return;
+            container.innerHTML = (q.images || []).map((img, i) => `
+                <div class="inserted-image-thumb">
+                    <img src="${img}">
+                    <button class="remove-img" onclick="removeImage('${qId}', ${i})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removeImage(qId, index) {
+            const q = findQuestion(qId);
+            if (!q) return;
+            q.images.splice(index, 1);
+            renderInsertedImages(qId);
+        }
+
+        // =============================================
+        // FULLSCREEN CANVAS
+        // =============================================
+        let fsSourceId = null;
+
+        function openFullscreen(cid) {
+            fsSourceId = cid;
+            const overlay = document.getElementById('fullscreenOverlay');
+            const fsCanvas = document.getElementById('fullscreenCanvas');
+            overlay.classList.add('show');
+
+            fsCanvas.width = window.innerWidth;
+            fsCanvas.height = window.innerHeight - 60;
+
+            const ctx = fsCanvas.getContext('2d');
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, fsCanvas.width, fsCanvas.height);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            const src = canvasInstances[cid];
+            if (src) ctx.drawImage(src.canvas, 0, 0);
+
+            canvasInstances['fs'] = {
+                ctx, canvas: fsCanvas,
+                drawing: false, tool: 'pen',
+                color: '#000000', size: 2,
+                history: [], lastPoint: null
+            };
+            saveState('fs');
+
+            fsCanvas.onpointerdown = e => pStart(e, 'fs');
+            fsCanvas.onpointermove = e => pMove(e, 'fs');
+            fsCanvas.onpointerup = e => pEnd(e, 'fs');
+            fsCanvas.ontouchstart = e => e.preventDefault();
+            fsCanvas.ontouchmove = e => e.preventDefault();
+        }
+
+        function closeFullscreen() {
+            document.getElementById('fullscreenOverlay').classList.remove('show');
+            if (fsSourceId && canvasInstances[fsSourceId]) {
+                const src = canvasInstances[fsSourceId];
+                const fsCanvas = document.getElementById('fullscreenCanvas');
+                src.ctx.clearRect(0, 0, src.canvas.width, src.canvas.height);
+                src.ctx.drawImage(fsCanvas, 0, 0, src.canvas.width, src.canvas.height);
+                saveState(fsSourceId);
+                autoSave(fsSourceId);
+            }
+        }
+
+        function fsUndo() { undoCanvas('fs'); }
+
+        function fsClear() {
+            const inst = canvasInstances['fs'];
+            if (!inst) return;
+            inst.ctx.fillStyle = 'white';
+            inst.ctx.fillRect(0, 0, inst.canvas.width, inst.canvas.height);
+            saveState('fs');
+        }
+
+        function fsTool(t) {
+            const inst = canvasInstances['fs'];
+            if (inst) inst.tool = t;
+            ['pen', 'hl', 'er'].forEach(x => {
+                const el = document.getElementById(`fs_${x}`);
+                if (el) el.classList.remove('active');
+            });
+            const map = { pen: 'pen', highlighter: 'hl', eraser: 'er' };
+            const el = document.getElementById(`fs_${map[t]}`);
+            if (el) el.classList.add('active');
+        }
+
+        function fsColor(c, btn) {
+            const inst = canvasInstances['fs'];
+            if (inst) inst.color = c;
+            const toolbar = btn.closest('.fullscreen-toolbar');
+            toolbar.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function fsSize(v) {
+            const inst = canvasInstances['fs'];
+            if (inst) inst.size = parseInt(v);
+        }
+
+        // =============================================
+        // SAVE / LOAD / CLEAR
+        // =============================================
+        function saveAll() {
+            // Capture text answers before saving
+            for (let ch in questionsDB) {
+                (questionsDB[ch] || []).forEach(q => {
+                    const ta = document.getElementById(`ta_${q.id}`);
+                    if (ta) q.textAnswer = ta.value;
+                });
+            }
+            localStorage.setItem('pc_questionsDB', JSON.stringify(questionsDB));
+            alert('✅ Sauvegarde effectuée !');
+        }
+
+        function loadAll() {
+            const saved = localStorage.getItem('pc_questionsDB');
+            if (saved) {
+                questionsDB = JSON.parse(saved);
+                renderQuestions();
+                alert('📂 Données chargées !');
+            } else {
+                alert('Aucune sauvegarde trouvée.');
+            }
+        }
+
+        function clearAllData() {
+            if (!confirm('⚠️ Tout effacer ? Irréversible !')) return;
+            localStorage.clear();
+            questionsDB = {};
+            for (let ch in defaultQuestions) {
+                questionsDB[ch] = JSON.parse(JSON.stringify(defaultQuestions[ch]));
+            }
+            renderQuestions();
+        }
+
+        function exportPDF() { window.print(); }
+
+        // =============================================
+        // RESIZE HANDLER
+        // =============================================
+        window.addEventListener('resize', () => {
+            for (let id in canvasInstances) {
+                if (id === 'fs') continue;
+                const inst = canvasInstances[id];
+                if (!inst || !inst.canvas.parentElement) continue;
+                const saved = inst.canvas.toDataURL();
+                const nw = inst.canvas.parentElement.getBoundingClientRect().width - 4;
+                if (Math.abs(inst.canvas.width - nw) > 10) {
+                    const img = new Image();
+                    img.onload = () => {
+                        inst.canvas.width = nw;
+                        inst.ctx.lineCap = 'round';
+                        inst.ctx.lineJoin = 'round';
+                        inst.ctx.drawImage(img, 0, 0, nw, inst.canvas.height);
+                    };
+                    img.src = saved;
+                }
+            }
+        });
+
+        // =============================================
+        // START
+        // =============================================
+        init();
+    </script>
+</body>
+</html>
