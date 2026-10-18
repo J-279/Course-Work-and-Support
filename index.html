@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Cours Interactif - Sciences & Techniques</title>
+    <title>⚗️ Cours Physique-Chimie Interactif</title>
+
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -21,7 +27,7 @@
         /* ========== HEADER ========== */
         .header {
             background: linear-gradient(135deg, #1a1a4e, #2d1b69);
-            padding: 20px 30px;
+            padding: 15px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -34,7 +40,7 @@
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             background: linear-gradient(90deg, #6c63ff, #48dbfb, #ff6b6b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -42,18 +48,18 @@
 
         .header-controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .header-controls button {
-            padding: 8px 16px;
+            padding: 8px 14px;
             border: 2px solid #6c63ff;
             background: transparent;
             color: #6c63ff;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
         }
 
@@ -62,66 +68,57 @@
             color: white;
         }
 
-        .header-controls button.active {
-            background: #6c63ff;
-            color: white;
-        }
-
-        /* ========== SIDEBAR MATIÈRES ========== */
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 80px);
-        }
-
-        .sidebar {
-            width: 220px;
+        /* ========== CHAPTER TABS ========== */
+        .chapter-bar {
             background: #0f0f3d;
-            border-right: 2px solid #1a1a5e;
-            padding: 15px 0;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .sidebar h3 {
-            color: #6c63ff;
-            padding: 10px 20px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .sidebar-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
+            padding: 12px 25px;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
+            gap: 8px;
+            overflow-x: auto;
+            border-bottom: 1px solid #1a1a5e;
         }
 
-        .sidebar-item:hover {
-            background: #1a1a5e;
-            border-left-color: #48dbfb;
+        .chapter-tab {
+            padding: 8px 18px;
+            border: 2px solid #2a2a6e;
+            background: transparent;
+            color: #b0b0d0;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: all 0.3s;
         }
 
-        .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(108,99,255,0.2), transparent);
-            border-left-color: #6c63ff;
-            color: #6c63ff;
+        .chapter-tab:hover {
+            border-color: #6c63ff;
+            color: #e0e0e0;
+        }
+
+        .chapter-tab.active {
+            background: #6c63ff;
+            border-color: #6c63ff;
+            color: white;
             font-weight: bold;
-        }
-
-        .sidebar-item .icon {
-            font-size: 1.2rem;
         }
 
         /* ========== CONTENT ========== */
         .content {
-            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
             padding: 25px;
-            overflow-y: auto;
+        }
+
+        .chapter-title {
+            color: #6c63ff;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .chapter-desc {
+            color: #8888bb;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
         }
 
         /* ========== QUESTION BLOCK ========== */
@@ -136,42 +133,65 @@
 
         .question-block:hover {
             border-color: #6c63ff;
-            box-shadow: 0 0 20px rgba(108, 99, 255, 0.15);
+            box-shadow: 0 0 25px rgba(108, 99, 255, 0.12);
         }
 
         .question-header {
             background: linear-gradient(135deg, #1a1a5e, #2d1b69);
-            padding: 15px 20px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
+            gap: 10px;
+        }
+
+        .question-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
         }
 
         .question-number {
             background: #6c63ff;
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             flex-shrink: 0;
         }
 
         .question-title {
-            flex: 1;
-            margin-left: 15px;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
         }
 
-        .question-difficulty {
-            padding: 4px 12px;
+        .collapse-icon {
+            color: #6c63ff;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .question-badges {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .diff-badge {
+            padding: 3px 10px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -180,10 +200,23 @@
         .diff-moyen { background: #fdcb6e; color: #2d3436; }
         .diff-difficile { background: #e17055; color: white; }
 
+        .points-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            background: #0984e3;
+            color: white;
+        }
+
         .question-body {
             padding: 20px;
         }
 
+        .question-body.hidden {
+            display: none;
+        }
+
+        /* ========== QUESTION TEXT ========== */
         .question-text {
             background: #0a0a35;
             padding: 20px;
@@ -191,30 +224,50 @@
             border-left: 4px solid #6c63ff;
             margin-bottom: 15px;
             font-size: 1rem;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
-        .question-text .formula {
-            background: #1a1a5e;
-            padding: 8px 14px;
+        .question-text .katex {
+            font-size: 1.1em;
+        }
+
+        .question-text .katex-display {
+            margin: 12px 0;
+        }
+
+        .question-hint {
+            background: rgba(253, 203, 110, 0.1);
+            border: 1px solid #fdcb6e;
             border-radius: 8px;
-            display: inline-block;
-            margin: 5px 0;
-            font-family: 'Courier New', monospace;
-            color: #48dbfb;
-            font-size: 1.05rem;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #fdcb6e;
+            display: none;
         }
 
-        .question-text .highlight {
-            color: #ff6b6b;
-            font-weight: bold;
+        .question-hint.show {
+            display: block;
         }
 
-        .question-text .unit {
-            color: #feca57;
+        .hint-toggle {
+            background: none;
+            border: 1px solid #fdcb6e;
+            color: #fdcb6e;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            transition: all 0.3s;
         }
 
-        /* ========== ZONE DESSIN / ÉCRITURE ========== */
+        .hint-toggle:hover {
+            background: #fdcb6e;
+            color: #2d3436;
+        }
+
+        /* ========== ANSWER ZONE ========== */
         .answer-zone {
             margin-top: 15px;
         }
@@ -233,16 +286,46 @@
             font-size: 0.95rem;
         }
 
-        .drawing-tools {
+        /* ========== ANSWER TOGGLE ========== */
+        .answer-toggle {
             display: flex;
             gap: 6px;
-            align-items: center;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
+        .toggle-btn {
+            padding: 6px 14px;
+            border: 2px solid #2a2a6e;
+            background: transparent;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            border-color: #6c63ff;
+            background: #6c63ff;
+            color: white;
+        }
+
+        /* ========== DRAWING TOOLS ========== */
+        .drawing-tools {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            padding: 8px 10px;
+            background: #0a0a35;
+            border-radius: 10px;
+        }
+
         .tool-btn {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 8px;
             border: 2px solid #2a2a6e;
             background: #0f0f3d;
@@ -251,7 +334,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: all 0.2s;
         }
 
@@ -266,9 +349,16 @@
             color: white;
         }
 
+        .tool-separator {
+            width: 1px;
+            height: 24px;
+            background: #2a2a6e;
+            margin: 0 3px;
+        }
+
         .color-btn {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             border: 3px solid transparent;
             cursor: pointer;
@@ -281,13 +371,20 @@
         }
 
         .size-slider {
-            width: 80px;
+            width: 70px;
             accent-color: #6c63ff;
         }
 
+        .size-label {
+            color: #8888bb;
+            font-size: 0.75rem;
+            min-width: 20px;
+        }
+
+        /* ========== CANVAS ========== */
         .canvas-container {
             position: relative;
-            border: 2px dashed #2a2a6e;
+            border: 2px solid #2a2a6e;
             border-radius: 12px;
             overflow: hidden;
             background: #ffffff;
@@ -302,42 +399,166 @@
 
         .canvas-container.lined {
             background: repeating-linear-gradient(
-                transparent,
-                transparent 29px,
-                #e8e8e8 29px,
-                #e8e8e8 30px
+                transparent, transparent 29px,
+                #d0d0e8 29px, #d0d0e8 30px
             ), #ffffff;
         }
 
         .canvas-container.grid {
             background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 29px,
-                #e8e8e8 29px,
-                #e8e8e8 30px
+                0deg, transparent, transparent 29px,
+                #d0d0e8 29px, #d0d0e8 30px
             ),
             repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 29px,
-                #e8e8e8 29px,
-                #e8e8e8 30px
+                90deg, transparent, transparent 29px,
+                #d0d0e8 29px, #d0d0e8 30px
             ), #ffffff;
         }
 
-        /* ========== TEXT ANSWER ========== */
+        .canvas-container.image-bg {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #ffffff;
+        }
+
+        /* ========== BG TYPE SELECTOR ========== */
+        .bg-selector {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .bg-btn {
+            padding: 4px 10px;
+            border: 1px solid #2a2a6e;
+            background: transparent;
+            color: #8888bb;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .bg-btn.active {
+            border-color: #48dbfb;
+            color: #48dbfb;
+            background: rgba(72, 219, 251, 0.1);
+        }
+
+        .bg-btn:hover {
+            border-color: #48dbfb;
+        }
+
+        /* Image upload for canvas background */
+        .image-upload-zone {
+            display: none;
+            margin-top: 8px;
+            padding: 10px;
+            border: 2px dashed #2a2a6e;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .image-upload-zone:hover {
+            border-color: #6c63ff;
+        }
+
+        .image-upload-zone.show {
+            display: block;
+        }
+
+        .image-upload-zone p {
+            color: #8888bb;
+            font-size: 0.85rem;
+        }
+
+        .image-upload-zone .preview {
+            max-width: 200px;
+            max-height: 100px;
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+
+        /* ========== TEXT ANSWER WITH LATEX ========== */
+        .text-answer-container {
+            display: none;
+        }
+
+        .text-answer-container.show {
+            display: block;
+        }
+
+        .latex-editor {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .latex-toolbar {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            background: #0a0a35;
+            border-radius: 10px;
+        }
+
+        .latex-btn {
+            padding: 4px 10px;
+            border: 1px solid #2a2a6e;
+            background: #12124a;
+            color: #48dbfb;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s;
+        }
+
+        .latex-btn:hover {
+            background: #1a1a5e;
+            border-color: #48dbfb;
+        }
+
+        .latex-btn .label {
+            font-family: 'Segoe UI', sans-serif;
+            color: #8888bb;
+            font-size: 0.7rem;
+            display: block;
+        }
+
+        .editor-split {
+            display: flex;
+            gap: 12px;
+        }
+
+        .editor-split > div {
+            flex: 1;
+        }
+
+        .editor-input-label {
+            color: #8888bb;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .text-answer {
             width: 100%;
-            min-height: 120px;
+            min-height: 150px;
             background: #0a0a35;
             border: 2px solid #2a2a6e;
-            border-radius: 12px;
+            border-radius: 10px;
             color: #e0e0e0;
             padding: 15px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             resize: vertical;
-            font-family: inherit;
+            font-family: 'Courier New', monospace;
             line-height: 1.6;
             transition: border-color 0.3s;
         }
@@ -347,28 +568,83 @@
             border-color: #6c63ff;
         }
 
-        /* ========== TOGGLE ANSWER TYPE ========== */
-        .answer-toggle {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+        .latex-preview {
+            min-height: 150px;
+            background: #ffffff;
+            border: 2px solid #2a2a6e;
+            border-radius: 10px;
+            padding: 15px;
+            color: #1a1a2e;
+            font-size: 1rem;
+            line-height: 1.8;
+            overflow-y: auto;
         }
 
-        .toggle-btn {
+        .latex-preview .katex {
+            font-size: 1.1em;
+        }
+
+        /* Image insert for text answer */
+        .image-insert-bar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .image-insert-btn {
             padding: 6px 14px;
-            border: 2px solid #2a2a6e;
-            background: transparent;
-            color: #e0e0e0;
+            border: 1px solid #2a2a6e;
+            background: #12124a;
+            color: #48dbfb;
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.3s;
         }
 
-        .toggle-btn.active {
-            border-color: #6c63ff;
-            background: #6c63ff;
+        .image-insert-btn:hover {
+            background: #1a1a5e;
+            border-color: #48dbfb;
+        }
+
+        .inserted-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .inserted-image-thumb {
+            position: relative;
+            width: 120px;
+            height: 90px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #2a2a6e;
+        }
+
+        .inserted-image-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .inserted-image-thumb .remove-img {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #e74c3c;
             color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* ========== STATUS BAR ========== */
@@ -389,25 +665,27 @@
             transition: all 0.3s;
         }
 
-        .status-todo {
-            background: #2d3436;
-            color: #b2bec3;
-            border: 1px solid #636e72;
+        .status-todo { background: #2d3436; color: #b2bec3; border: 1px solid #636e72; }
+        .status-done { background: #00b894; color: white; border: 1px solid #00b894; }
+        .status-review { background: #fdcb6e; color: #2d3436; border: 1px solid #fdcb6e; }
+
+        .delete-btn {
+            background: none;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
         }
 
-        .status-done {
-            background: #00b894;
+        .delete-btn:hover {
+            background: #e74c3c;
             color: white;
-            border: 1px solid #00b894;
         }
 
-        .status-review {
-            background: #fdcb6e;
-            color: #2d3436;
-            border: 1px solid #fdcb6e;
-        }
-
-        /* ========== ADD QUESTION ========== */
+        /* ========== ADD QUESTION BTN ========== */
         .add-question-btn {
             width: 100%;
             padding: 20px;
@@ -432,7 +710,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.75);
             z-index: 200;
             justify-content: center;
             align-items: center;
@@ -446,10 +724,10 @@
             background: #12124a;
             border: 2px solid #6c63ff;
             border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
+            padding: 25px;
+            width: 92%;
+            max-width: 750px;
+            max-height: 92vh;
             overflow-y: auto;
         }
 
@@ -462,7 +740,7 @@
             display: block;
             margin-bottom: 5px;
             color: #48dbfb;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .modal input, .modal textarea, .modal select {
@@ -472,8 +750,16 @@
             border: 2px solid #2a2a6e;
             border-radius: 8px;
             color: #e0e0e0;
-            font-size: 1rem;
-            margin-bottom: 15px;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        .modal textarea {
+            font-family: 'Courier New', monospace;
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
         }
 
         .modal input:focus, .modal textarea:focus, .modal select:focus {
@@ -481,10 +767,63 @@
             border-color: #6c63ff;
         }
 
+        .modal-preview {
+            background: #ffffff;
+            border: 2px solid #2a2a6e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            color: #1a1a2e;
+            min-height: 60px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .modal-preview .katex { font-size: 1.1em; }
+
+        .modal-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-row > div {
+            flex: 1;
+        }
+
+        .latex-help {
+            background: #0a0a35;
+            border: 1px solid #2a2a6e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .latex-help h4 {
+            color: #fdcb6e;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .latex-help table {
+            width: 100%;
+            font-size: 0.8rem;
+        }
+
+        .latex-help td {
+            padding: 3px 8px;
+            border-bottom: 1px solid #1a1a5e;
+        }
+
+        .latex-help td:first-child {
+            font-family: 'Courier New', monospace;
+            color: #48dbfb;
+        }
+
         .modal-actions {
             display: flex;
             gap: 10px;
             justify-content: flex-end;
+            margin-top: 15px;
         }
 
         .modal-actions button {
@@ -496,15 +835,9 @@
             transition: all 0.3s;
         }
 
-        .btn-save {
-            background: #6c63ff;
-            color: white;
-        }
-
-        .btn-cancel {
-            background: #2d3436;
-            color: #e0e0e0;
-        }
+        .btn-save { background: #6c63ff; color: white; }
+        .btn-save:hover { background: #5a52e0; }
+        .btn-cancel { background: #2d3436; color: #e0e0e0; }
 
         /* ========== FULLSCREEN CANVAS ========== */
         .fullscreen-overlay {
@@ -523,20 +856,21 @@
 
         .fullscreen-toolbar {
             background: #12124a;
-            padding: 10px 20px;
+            padding: 10px 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .fullscreen-toolbar button {
-            padding: 8px 16px;
+            padding: 6px 14px;
             border: 2px solid #6c63ff;
             background: transparent;
             color: #6c63ff;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 0.85rem;
             transition: all 0.3s;
         }
 
@@ -557,59 +891,23 @@
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .header h1 {
-                font-size: 1.3rem;
-            }
-
-            .content {
-                padding: 15px;
-            }
-
-            .question-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-        }
-
-        /* ========== MOBILE SIDEBAR TOGGLE ========== */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #6c63ff;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-            .sidebar.mobile-show {
-                display: block;
-                position: fixed;
-                top: 0; left: 0;
-                width: 260px;
-                height: 100%;
-                z-index: 150;
-                box-shadow: 5px 0 20px rgba(0,0,0,0.5);
-            }
+            .header h1 { font-size: 1.2rem; }
+            .content { padding: 15px; }
+            .editor-split { flex-direction: column; }
+            .modal-row { flex-direction: column; }
+            .question-header { flex-wrap: wrap; }
         }
 
         /* ========== PRINT ========== */
         @media print {
-            .header, .sidebar, .drawing-tools, .answer-toggle,
-            .status-bar, .add-question-btn, .header-controls {
-                display: none !important;
-            }
+            .header, .chapter-bar, .drawing-tools, .answer-toggle,
+            .status-bar, .add-question-btn, .header-controls,
+            .latex-toolbar, .image-insert-bar, .bg-selector,
+            .hint-toggle, .tool-btn, .toggle-btn { display: none !important; }
             body { background: white; color: black; }
             .question-block { border: 1px solid #ccc; break-inside: avoid; }
             .canvas-container { border: 1px solid #ccc; }
+            .latex-preview { border: 1px solid #ccc; }
         }
     </style>
 </head>
@@ -617,78 +915,91 @@
 
     <!-- HEADER -->
     <div class="header">
-        <div style="display:flex; align-items:center; gap:15px;">
-            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰</button>
-            <h1>📚 Cours Interactif</h1>
-        </div>
+        <h1>⚗️ Physique-Chimie — Cours Interactif</h1>
         <div class="header-controls">
             <button onclick="saveAll()">💾 Sauvegarder</button>
             <button onclick="loadAll()">📂 Charger</button>
-            <button onclick="exportPDF()">📄 Imprimer</button>
-            <button onclick="clearAll()">🗑️ Tout effacer</button>
+            <button onclick="exportPDF()">🖨️ Imprimer</button>
+            <button onclick="clearAllData()">🗑️ Reset</button>
         </div>
     </div>
 
-    <div class="main-container">
-        <!-- SIDEBAR -->
-        <div class="sidebar" id="sidebar">
-            <h3>📖 Matières</h3>
-            <div class="sidebar-item active" onclick="selectSubject(this, 'physique-chimie')">
-                <span class="icon">⚗️</span> Physique-Chimie
-            </div>
-            <div class="sidebar-item" onclick="selectSubject(this, 'mathematiques')">
-                <span class="icon">📐</span> Mathématiques
-            </div>
-            <div class="sidebar-item" onclick="selectSubject(this, 'mecanique')">
-                <span class="icon">⚙️</span> Mécanique
-            </div>
-            <div class="sidebar-item" onclick="selectSubject(this, 'electrotech')">
-                <span class="icon">🔌</span> Électrotechnique
-            </div>
-            <div class="sidebar-item" onclick="selectSubject(this, 'electronique')">
-                <span class="icon">🔋</span> Électronique
-            </div>
-            <div class="sidebar-item" onclick="selectSubject(this, 'informatique')">
-                <span class="icon">💻</span> Informatique
-            </div>
-            <div class="sidebar-item" onclick="selectSubject(this, 'thermodynamique')">
-                <span class="icon">🌡️</span> Thermodynamique
-            </div>
-        </div>
+    <!-- CHAPTER TABS -->
+    <div class="chapter-bar" id="chapterBar"></div>
 
-        <!-- CONTENT -->
-        <div class="content" id="content">
-            <!-- Questions will be rendered here -->
-        </div>
-    </div>
+    <!-- CONTENT -->
+    <div class="content" id="content"></div>
 
-    <!-- MODAL : Ajouter une question -->
+    <!-- MODAL : Add/Edit Question -->
     <div class="modal-overlay" id="addModal">
         <div class="modal">
             <h2>➕ Nouvelle Question</h2>
 
             <label>Titre de la question</label>
-            <input type="text" id="modalTitle" placeholder="Ex: Calcul de force...">
+            <input type="text" id="modalTitle" placeholder="Ex: Loi de Newton, Énergie cinétique...">
 
-            <label>Énoncé</label>
-            <textarea id="modalText" rows="5" placeholder="Écrivez l'énoncé ici...&#10;Utilisez [f] pour formule, [h] pour important"></textarea>
+            <label>Énoncé (avec LaTeX : utilisez $...$ pour inline, $$...$$ pour bloc)</label>
+            <textarea id="modalText" placeholder="Écrivez l'énoncé ici...&#10;&#10;Exemple :&#10;Un objet de masse $m = 5$ kg est soumis à une force $F$.&#10;$$F = m \times a$$&#10;Calculez l'accélération." oninput="previewModal()"></textarea>
 
-            <label>Difficulté</label>
-            <select id="modalDiff">
-                <option value="facile">🟢 Facile</option>
-                <option value="moyen" selected>🟡 Moyen</option>
-                <option value="difficile">🔴 Difficile</option>
-            </select>
+            <label>👁️ Aperçu en temps réel :</label>
+            <div class="modal-preview" id="modalPreview">
+                <em style="color:#aaa;">L'aperçu apparaîtra ici...</em>
+            </div>
 
-            <label>Type de fond pour la réponse</label>
-            <select id="modalBg">
-                <option value="blank">Blanc (vide)</option>
-                <option value="lined">Ligné</option>
-                <option value="grid">Quadrillé</option>
-            </select>
+            <div class="latex-help">
+                <h4>📝 Aide LaTeX rapide :</h4>
+                <table>
+                    <tr><td>$F = ma$</td><td>→ Formule inline</td></tr>
+                    <tr><td>$$E = \frac{1}{2}mv^2$$</td><td>→ Formule centrée</td></tr>
+                    <tr><td>\frac{a}{b}</td><td>→ Fraction</td></tr>
+                    <tr><td>\sqrt{x}</td><td>→ Racine carrée</td></tr>
+                    <tr><td>x^{2}</td><td>→ Exposant</td></tr>
+                    <tr><td>x_{i}</td><td>→ Indice</td></tr>
+                    <tr><td>\vec{F}</td><td>→ Vecteur</td></tr>
+                    <tr><td>\sum_{i=1}^{n}</td><td>→ Somme</td></tr>
+                    <tr><td>\int_{a}^{b}</td><td>→ Intégrale</td></tr>
+                    <tr><td>\Delta, \alpha, \omega</td><td>→ Lettres grecques</td></tr>
+                    <tr><td>\times, \cdot, \pm</td><td>→ Opérateurs</td></tr>
+                    <tr><td>\text{mot}</td><td>→ Texte dans formule</td></tr>
+                </table>
+            </div>
 
-            <label>Hauteur du canvas (px)</label>
-            <input type="number" id="modalHeight" value="300" min="100" max="1000">
+            <label>Indice / Aide (optionnel, supporte LaTeX)</label>
+            <input type="text" id="modalHint" placeholder="Ex: Pensez à utiliser $\vec{F} = m\vec{a}$">
+
+            <div class="modal-row">
+                <div>
+                    <label>Difficulté</label>
+                    <select id="modalDiff">
+                        <option value="facile">🟢 Facile</option>
+                        <option value="moyen" selected>🟡 Moyen</option>
+                        <option value="difficile">🔴 Difficile</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Points</label>
+                    <input type="number" id="modalPoints" value="4" min="1" max="20">
+                </div>
+            </div>
+
+            <div class="modal-row">
+                <div>
+                    <label>Fond de la zone dessin</label>
+                    <select id="modalBg">
+                        <option value="blank">⬜ Blanc</option>
+                        <option value="lined">📝 Ligné</option>
+                        <option value="grid" selected>📊 Quadrillé</option>
+                        <option value="image">🖼️ Image</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Hauteur du canvas (px)</label>
+                    <input type="number" id="modalHeight" value="300" min="100" max="800" step="50">
+                </div>
+            </div>
+
+            <label>Chapitre</label>
+            <select id="modalChapter"></select>
 
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeModal()">Annuler</button>
@@ -701,156 +1012,229 @@
     <div class="fullscreen-overlay" id="fullscreenOverlay">
         <div class="fullscreen-toolbar" id="fullscreenToolbar">
             <button onclick="closeFullscreen()">✕ Fermer</button>
-            <button onclick="fullscreenUndo()">↩️ Annuler</button>
-            <button onclick="fullscreenClear()">🗑️ Effacer</button>
-            <div class="drawing-tools" id="fullscreenTools"></div>
+            <button onclick="fsUndo()">↩️ Annuler</button>
+            <button onclick="fsClear()">🗑️ Effacer</button>
+            <div class="tool-separator"></div>
+            <button onclick="fsTool('pen')" id="fs_pen" class="active">✒️</button>
+            <button onclick="fsTool('highlighter')" id="fs_hl">🖍️</button>
+            <button onclick="fsTool('eraser')" id="fs_er">🧹</button>
+            <div class="tool-separator"></div>
+            <div class="color-btn active" style="background:#000;" onclick="fsColor('#000000', this)"></div>
+            <div class="color-btn" style="background:#1e90ff;" onclick="fsColor('#1e90ff', this)"></div>
+            <div class="color-btn" style="background:#e74c3c;" onclick="fsColor('#e74c3c', this)"></div>
+            <div class="color-btn" style="background:#27ae60;" onclick="fsColor('#27ae60', this)"></div>
+            <input type="range" class="size-slider" min="1" max="20" value="2" onchange="fsSize(this.value)">
         </div>
         <div class="fullscreen-canvas-wrap">
             <canvas id="fullscreenCanvas"></canvas>
         </div>
     </div>
 
+    <!-- Hidden file inputs -->
+    <input type="file" id="globalFileInput" accept="image/*" style="display:none;">
+    <input type="file" id="textImageInput" accept="image/*" style="display:none;" multiple>
+
     <script>
         // =============================================
-        // DATA STORE
+        // DATA
         // =============================================
-        let currentSubject = 'physique-chimie';
-        let questionsDB = {};
+        let currentChapter = 'chap1';
         let canvasInstances = {};
 
-        // Default questions per subject
+        const chapters = [
+            { id: 'chap1', name: 'Mécanique', icon: '🔧' },
+            { id: 'chap2', name: 'Énergie', icon: '⚡' },
+            { id: 'chap3', name: 'Chimie', icon: '🧪' },
+            { id: 'chap4', name: 'Ondes', icon: '🌊' },
+            { id: 'chap5', name: 'Électricité', icon: '🔌' },
+            { id: 'chap6', name: 'Thermo', icon: '🌡️' }
+        ];
+
+        let questionsDB = {};
+
         const defaultQuestions = {
-            'physique-chimie': [
+            chap1: [
                 {
-                    id: 'pc1',
-                    title: 'Loi de Newton - Force et accélération',
-                    text: 'Un objet de masse <span class="highlight">m = 5 kg</span> est soumis à une force constante.<br><br>Sa vitesse passe de <span class="unit">v₁ = 2 m/s</span> à <span class="unit">v₂ = 12 m/s</span> en <span class="unit">t = 4 s</span>.<br><br>1) Calculez l\'accélération de l\'objet.<br>2) En déduire la force appliquée en utilisant : <span class="formula">F = m × a</span><br>3) Calculez l\'énergie cinétique finale : <span class="formula">Ec = ½ × m × v²</span>',
+                    id: 'q1',
+                    title: 'Deuxième loi de Newton',
+                    text: 'Un objet de masse $m = 5 \\text{ kg}$ est soumis à une force constante $\\vec{F}$.\n\nSa vitesse passe de $v_1 = 2 \\text{ m/s}$ à $v_2 = 12 \\text{ m/s}$ en $\\Delta t = 4 \\text{ s}$.\n\n1) Calculez l\'accélération $a$ de l\'objet.\n$$a = \\frac{\\Delta v}{\\Delta t} = \\frac{v_2 - v_1}{\\Delta t}$$\n\n2) En déduire la norme de la force $F$ appliquée :\n$$\\vec{F} = m \\cdot \\vec{a}$$\n\n3) Calculez l\'énergie cinétique finale :\n$$E_c = \\frac{1}{2} m v_2^2$$',
+                    hint: 'Rappel : $1 \\text{ N} = 1 \\text{ kg} \\cdot \\text{m/s}^2$',
                     difficulty: 'moyen',
+                    points: 6,
                     bgType: 'grid',
                     canvasHeight: 350,
-                    status: 'todo'
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
                 },
                 {
-                    id: 'pc2',
-                    title: 'Réaction chimique - Équilibrage',
-                    text: 'Équilibrez la réaction de combustion du méthane :<br><br><span class="formula">CH₄ + O₂ → CO₂ + H₂O</span><br><br>1) Équilibrez cette équation.<br>2) Si on brûle <span class="highlight">3 moles</span> de CH₄, combien de moles de CO₂ sont produites ?<br>3) Calculez la masse de CO₂ produite. <span class="unit">(M(C)=12, M(O)=16 g/mol)</span>',
+                    id: 'q2',
+                    title: 'Chute libre',
+                    text: 'On lâche une bille sans vitesse initiale d\'une hauteur $h = 20 \\text{ m}$.\nOn prend $g = 9{,}81 \\text{ m/s}^2$.\n\n1) Écrivez l\'équation horaire $z(t)$ :\n$$z(t) = h - \\frac{1}{2}g t^2$$\n\n2) Calculez le temps de chute $t_c$ (quand $z = 0$) :\n$$t_c = \\sqrt{\\frac{2h}{g}}$$\n\n3) Calculez la vitesse à l\'impact :\n$$v = g \\cdot t_c$$',
+                    hint: '$\\sqrt{\\frac{2 \\times 20}{9{,}81}} \\approx 2{,}02 \\text{ s}$',
                     difficulty: 'facile',
-                    bgType: 'lined',
+                    points: 4,
+                    bgType: 'grid',
                     canvasHeight: 300,
-                    status: 'todo'
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
                 }
             ],
-            'mathematiques': [
+            chap2: [
                 {
-                    id: 'math1',
-                    title: 'Dérivée et étude de fonction',
-                    text: 'Soit la fonction : <span class="formula">f(x) = 2x³ - 9x² + 12x - 4</span><br><br>1) Calculez <span class="formula">f\'(x)</span><br>2) Résolvez <span class="formula">f\'(x) = 0</span><br>3) Dressez le tableau de variations de f.<br>4) Tracez l\'allure de la courbe.',
+                    id: 'q3',
+                    title: 'Théorème de l\'énergie cinétique',
+                    text: 'Un chariot de masse $m = 2 \\text{ kg}$ passe d\'une vitesse $v_A = 1 \\text{ m/s}$ à $v_B = 5 \\text{ m/s}$ sur une distance $d = 3 \\text{ m}$.\n\n1) Calculez la variation d\'énergie cinétique :\n$$\\Delta E_c = \\frac{1}{2}m v_B^2 - \\frac{1}{2}m v_A^2$$\n\n2) En déduire la force résultante $F$ par le théorème :\n$$\\Delta E_c = \\sum \\vec{F} \\cdot \\vec{d}$$\n\n3) Vérifiez avec $F = m \\cdot a$ et la cinématique.',
+                    hint: 'Utilisez $v_B^2 = v_A^2 + 2a \\cdot d$ pour trouver $a$.',
                     difficulty: 'moyen',
-                    bgType: 'grid',
-                    canvasHeight: 400,
-                    status: 'todo'
-                },
-                {
-                    id: 'math2',
-                    title: 'Intégrale définie',
-                    text: 'Calculez l\'intégrale suivante :<br><br><span class="formula">∫₀² (3x² + 2x - 1) dx</span><br><br>1) Trouvez la primitive F(x).<br>2) Calculez F(2) - F(0).<br>3) Interprétez géométriquement le résultat.',
-                    difficulty: 'moyen',
+                    points: 5,
                     bgType: 'grid',
                     canvasHeight: 350,
-                    status: 'todo'
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
                 }
             ],
-            'mecanique': [
+            chap3: [
                 {
-                    id: 'meca1',
-                    title: 'Moment de force et équilibre',
-                    text: 'Une poutre homogène AB de longueur <span class="unit">L = 4 m</span> et de masse <span class="unit">m = 20 kg</span> est en appui en son point A.<br><br>Une charge <span class="highlight">F = 150 N</span> est appliquée en B.<br><br>1) Faites le schéma des forces.<br>2) Calculez le moment de chaque force par rapport à A.<br>3) Déterminez la réaction en A pour l\'équilibre. <span class="formula">ΣM/A = 0</span>',
-                    difficulty: 'difficile',
-                    bgType: 'grid',
-                    canvasHeight: 400,
-                    status: 'todo'
-                }
-            ],
-            'electrotech': [
-                {
-                    id: 'et1',
-                    title: 'Transformateur monophasé',
-                    text: 'Un transformateur monophasé idéal a :<br>- Nombre de spires primaire : <span class="highlight">N₁ = 500</span><br>- Nombre de spires secondaire : <span class="highlight">N₂ = 50</span><br>- Tension primaire : <span class="unit">U₁ = 230 V</span><br><br>1) Calculez le rapport de transformation : <span class="formula">m = N₂/N₁</span><br>2) En déduire U₂.<br>3) Si le courant secondaire est I₂ = 10 A, calculez I₁.',
+                    id: 'q4',
+                    title: 'Équilibrage de réaction',
+                    text: 'Équilibrez la combustion complète du propane :\n$$C_3H_8 + O_2 \\rightarrow CO_2 + H_2O$$\n\n1) Équilibrez cette équation.\n\n2) Si on brûle $n = 2 \\text{ mol}$ de propane, combien de moles de $CO_2$ sont produites ?\n\n3) Calculez la masse de $CO_2$ produite.\n$$M(CO_2) = 12 + 2 \\times 16 = 44 \\text{ g/mol}$$',
+                    hint: '$C_3H_8 + 5O_2 \\rightarrow 3CO_2 + 4H_2O$',
                     difficulty: 'facile',
+                    points: 4,
                     bgType: 'lined',
                     canvasHeight: 300,
-                    status: 'todo'
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
                 }
             ],
-            'electronique': [
+            chap4: [
                 {
-                    id: 'elec1',
-                    title: 'Circuit RC - Charge du condensateur',
-                    text: 'Un circuit RC série est composé de :<br>- <span class="highlight">R = 10 kΩ</span><br>- <span class="highlight">C = 100 μF</span><br>- Alimenté par <span class="unit">E = 12 V</span><br><br>1) Calculez la constante de temps : <span class="formula">τ = R × C</span><br>2) Quelle est la tension aux bornes du condensateur à t = τ ?<br>3) Au bout de combien de temps le condensateur est-il chargé à 99% ?<br>4) Tracez Uc(t).',
-                    difficulty: 'moyen',
-                    bgType: 'grid',
-                    canvasHeight: 400,
-                    status: 'todo'
-                }
-            ],
-            'informatique': [
-                {
-                    id: 'info1',
-                    title: 'Conversion binaire-décimal',
-                    text: '1) Convertissez en décimal : <span class="formula">1101 0110₂</span><br>2) Convertissez en binaire : <span class="formula">197₁₀</span><br>3) Effectuez l\'addition binaire : <span class="formula">1011 + 0110</span><br>4) Convertissez en hexadécimal : <span class="formula">1111 1010₂</span>',
+                    id: 'q5',
+                    title: 'Longueur d\'onde et fréquence',
+                    text: 'Une onde sonore se propage dans l\'air à $v = 340 \\text{ m/s}$ avec une fréquence $f = 680 \\text{ Hz}$.\n\n1) Calculez la longueur d\'onde :\n$$\\lambda = \\frac{v}{f}$$\n\n2) Quelle est la période $T$ ?\n$$T = \\frac{1}{f}$$\n\n3) Si cette onde atteint une paroi à $d = 170 \\text{ m}$, au bout de combien de temps entend-on l\'écho ?',
+                    hint: 'L\'écho fait un aller-retour : $t = \\frac{2d}{v}$',
                     difficulty: 'facile',
+                    points: 3,
                     bgType: 'lined',
-                    canvasHeight: 300,
-                    status: 'todo'
+                    canvasHeight: 250,
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
                 }
             ],
-            'thermodynamique': [
+            chap5: [
                 {
-                    id: 'thermo1',
-                    title: 'Premier principe - Gaz parfait',
-                    text: 'Un gaz parfait subit une transformation isobare à <span class="unit">P = 2 bar</span>.<br>Son volume passe de <span class="unit">V₁ = 5 L</span> à <span class="unit">V₂ = 8 L</span>.<br><br>1) Calculez le travail W : <span class="formula">W = -P × ΔV</span><br>2) Si la chaleur reçue est Q = 1200 J, calculez ΔU.<br>3) Expliquez le signe de W. <span class="formula">ΔU = W + Q</span>',
+                    id: 'q6',
+                    title: 'Loi d\'Ohm et puissance',
+                    text: 'Un circuit contient une résistance $R = 100 \\text{ } \\Omega$ alimentée par une tension $U = 12 \\text{ V}$.\n\n1) Calculez le courant $I$ :\n$$I = \\frac{U}{R}$$\n\n2) Calculez la puissance dissipée :\n$$P = U \\times I = \\frac{U^2}{R}$$\n\n3) Quelle énergie est dissipée en $t = 5 \\text{ min}$ ?\n$$E = P \\times t$$',
+                    hint: 'Attention : convertir les minutes en secondes !',
+                    difficulty: 'facile',
+                    points: 4,
+                    bgType: 'grid',
+                    canvasHeight: 300,
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
+                }
+            ],
+            chap6: [
+                {
+                    id: 'q7',
+                    title: 'Capacité thermique',
+                    text: 'On chauffe $m = 500 \\text{ g}$ d\'eau de $T_1 = 20°C$ à $T_2 = 80°C$.\n\nLa capacité thermique massique de l\'eau est $c = 4180 \\text{ J/(kg·°C)}$.\n\n1) Calculez l\'énergie nécessaire :\n$$Q = m \\cdot c \\cdot \\Delta T$$\n\n2) Si le chauffage a une puissance $P = 1000 \\text{ W}$, combien de temps faut-il ?\n$$t = \\frac{Q}{P}$$\n\n3) Quel est le rendement si la durée réelle est de $3 \\text{ min}$ ?',
+                    hint: 'Rendement $\\eta = \\frac{Q}{P \\times t_{\\text{réel}}}$',
                     difficulty: 'moyen',
+                    points: 5,
                     bgType: 'grid',
                     canvasHeight: 350,
-                    status: 'todo'
+                    status: 'todo',
+                    textAnswer: '',
+                    images: []
                 }
             ]
         };
 
-        // Initialize DB
-        function initDB() {
-            for (let subject in defaultQuestions) {
-                if (!questionsDB[subject]) {
-                    questionsDB[subject] = JSON.parse(JSON.stringify(defaultQuestions[subject]));
+        // =============================================
+        // INIT
+        // =============================================
+        function init() {
+            const saved = localStorage.getItem('pc_questionsDB');
+            if (saved) {
+                try { questionsDB = JSON.parse(saved); } catch(e) {}
+            }
+            // Fill missing chapters
+            for (let ch in defaultQuestions) {
+                if (!questionsDB[ch]) {
+                    questionsDB[ch] = JSON.parse(JSON.stringify(defaultQuestions[ch]));
                 }
             }
+            renderChapterTabs();
+            renderQuestions();
         }
 
         // =============================================
-        // RENDER
+        // CHAPTERS
+        // =============================================
+        function renderChapterTabs() {
+            const bar = document.getElementById('chapterBar');
+            bar.innerHTML = chapters.map(ch =>
+                `<button class="chapter-tab ${ch.id === currentChapter ? 'active' : ''}"
+                    onclick="selectChapter('${ch.id}', this)">
+                    ${ch.icon} ${ch.name}
+                </button>`
+            ).join('');
+        }
+
+        function selectChapter(chId, el) {
+            currentChapter = chId;
+            document.querySelectorAll('.chapter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            renderQuestions();
+        }
+
+        // =============================================
+        // RENDER QUESTIONS
         // =============================================
         function renderQuestions() {
             const content = document.getElementById('content');
-            const questions = questionsDB[currentSubject] || [];
+            const questions = questionsDB[currentChapter] || [];
+            const ch = chapters.find(c => c.id === currentChapter);
 
-            let html = `<h2 style="margin-bottom:20px; color:#6c63ff;">${getSubjectName(currentSubject)}</h2>`;
+            let html = `<h2 class="chapter-title">${ch.icon} ${ch.name}</h2>
+                         <p class="chapter-desc">${questions.length} exercice(s) dans ce chapitre</p>`;
 
-            questions.forEach((q, index) => {
-                const statusClass = q.status === 'done' ? 'status-done' : q.status === 'review' ? 'status-review' : 'status-todo';
-                const statusText = q.status === 'done' ? '✅ Terminé' : q.status === 'review' ? '🔍 À revoir' : '⬜ À faire';
-                const canvasId = `canvas_${currentSubject}_${q.id}`;
+            questions.forEach((q, idx) => {
+                const cid = `c_${currentChapter}_${q.id}`;
+                const stClass = q.status === 'done' ? 'status-done' : q.status === 'review' ? 'status-review' : 'status-todo';
+                const stText = q.status === 'done' ? '✅ Terminé' : q.status === 'review' ? '🔍 À revoir' : '⬜ À faire';
 
                 html += `
                 <div class="question-block" id="block_${q.id}">
-                    <div class="question-header" onclick="toggleQuestion('${q.id}')">
-                        <div style="display:flex; align-items:center;">
-                            <div class="question-number">${index + 1}</div>
+                    <div class="question-header" onclick="toggleBody('${q.id}')">
+                        <div class="question-left">
+                            <div class="question-number">${idx + 1}</div>
                             <div class="question-title">${q.title}</div>
                         </div>
-                        <span class="question-difficulty diff-${q.difficulty}">${q.difficulty}</span>
+                        <div class="question-badges">
+                            <span class="diff-badge diff-${q.difficulty}">${q.difficulty}</span>
+                            <span class="points-badge">${q.points} pts</span>
+                            <span class="collapse-icon" id="cicon_${q.id}">▼</span>
+                        </div>
                     </div>
                     <div class="question-body" id="body_${q.id}">
-                        <div class="question-text">${q.text}</div>
+
+                        <div class="question-text" id="qtext_${q.id}">
+                            ${formatText(q.text)}
+                        </div>
+
+                        ${q.hint ? `
+                        <button class="hint-toggle" onclick="toggleHint('${q.id}')">💡 Indice</button>
+                        <div class="question-hint" id="hint_${q.id}">${formatText(q.hint)}</div>
+                        ` : ''}
 
                         <div class="answer-zone">
                             <div class="answer-zone-header">
@@ -858,50 +1242,113 @@
                             </div>
 
                             <div class="answer-toggle">
-                                <button class="toggle-btn active" onclick="showDrawMode('${q.id}', '${canvasId}', this)">🖊️ Dessin / Stylet</button>
-                                <button class="toggle-btn" onclick="showTextMode('${q.id}', this)">⌨️ Texte</button>
-                                <button class="toggle-btn" onclick="openFullscreen('${canvasId}')">🔲 Plein écran</button>
+                                <button class="toggle-btn active" onclick="showMode('${q.id}','draw',this)">🖊️ Stylet</button>
+                                <button class="toggle-btn" onclick="showMode('${q.id}','text',this)">⌨️ Texte + LaTeX</button>
+                                <button class="toggle-btn" onclick="openFullscreen('${cid}')">🔲 Plein écran</button>
                             </div>
 
-                            <!-- DRAWING MODE -->
+                            <!-- DRAW MODE -->
                             <div id="draw_${q.id}">
-                                <div class="drawing-tools" id="tools_${canvasId}">
-                                    <button class="tool-btn active" onclick="setTool('${canvasId}', 'pen', this)" title="Stylo">✒️</button>
-                                    <button class="tool-btn" onclick="setTool('${canvasId}', 'highlighter', this)" title="Surligneur">🖍️</button>
-                                    <button class="tool-btn" onclick="setTool('${canvasId}', 'eraser', this)" title="Gomme">🧹</button>
-                                    <button class="tool-btn" onclick="undoCanvas('${canvasId}')" title="Annuler">↩️</button>
-                                    <button class="tool-btn" onclick="clearCanvas('${canvasId}')" title="Effacer tout">🗑️</button>
+                                <div class="drawing-tools">
+                                    <button class="tool-btn active" onclick="setTool('${cid}','pen',this)" title="Stylo">✒️</button>
+                                    <button class="tool-btn" onclick="setTool('${cid}','highlighter',this)" title="Surligneur">🖍️</button>
+                                    <button class="tool-btn" onclick="setTool('${cid}','eraser',this)" title="Gomme">🧹</button>
+                                    <button class="tool-btn" onclick="undoCanvas('${cid}')" title="Annuler">↩️</button>
+                                    <button class="tool-btn" onclick="clearCanvas('${cid}')" title="Tout effacer">🗑️</button>
 
-                                    <div style="width:1px;height:25px;background:#2a2a6e;margin:0 4px;"></div>
+                                    <div class="tool-separator"></div>
 
-                                    <div class="color-btn active" style="background:#000000;" onclick="setColor('${canvasId}', '#000000', this)"></div>
-                                    <div class="color-btn" style="background:#1e90ff;" onclick="setColor('${canvasId}', '#1e90ff', this)"></div>
-                                    <div class="color-btn" style="background:#e74c3c;" onclick="setColor('${canvasId}', '#e74c3c', this)"></div>
-                                    <div class="color-btn" style="background:#27ae60;" onclick="setColor('${canvasId}', '#27ae60', this)"></div>
-                                    <div class="color-btn" style="background:#f39c12;" onclick="setColor('${canvasId}', '#f39c12', this)"></div>
-                                    <div class="color-btn" style="background:#8e44ad;" onclick="setColor('${canvasId}', '#8e44ad', this)"></div>
+                                    <div class="color-btn active" style="background:#000" onclick="setColor('${cid}','#000000',this)"></div>
+                                    <div class="color-btn" style="background:#1e90ff" onclick="setColor('${cid}','#1e90ff',this)"></div>
+                                    <div class="color-btn" style="background:#e74c3c" onclick="setColor('${cid}','#e74c3c',this)"></div>
+                                    <div class="color-btn" style="background:#27ae60" onclick="setColor('${cid}','#27ae60',this)"></div>
+                                    <div class="color-btn" style="background:#f39c12" onclick="setColor('${cid}','#f39c12',this)"></div>
+                                    <div class="color-btn" style="background:#8e44ad" onclick="setColor('${cid}','#8e44ad',this)"></div>
 
-                                    <div style="width:1px;height:25px;background:#2a2a6e;margin:0 4px;"></div>
+                                    <div class="tool-separator"></div>
 
-                                    <input type="range" class="size-slider" min="1" max="20" value="2" onchange="setSize('${canvasId}', this.value)" title="Épaisseur">
+                                    <input type="range" class="size-slider" min="1" max="20" value="2"
+                                           oninput="setStrokeSize('${cid}',this.value, this)">
+                                    <span class="size-label" id="sizelbl_${cid}">2</span>
+
+                                    <div class="tool-separator"></div>
+
+                                    <div class="bg-selector">
+                                        <button class="bg-btn ${q.bgType==='blank'?'active':''}" onclick="setBg('${cid}','${q.id}','blank',this)">⬜</button>
+                                        <button class="bg-btn ${q.bgType==='lined'?'active':''}" onclick="setBg('${cid}','${q.id}','lined',this)">📝</button>
+                                        <button class="bg-btn ${q.bgType==='grid'?'active':''}" onclick="setBg('${cid}','${q.id}','grid',this)">📊</button>
+                                        <button class="bg-btn ${q.bgType==='image'?'active':''}" onclick="setBg('${cid}','${q.id}','image',this)">🖼️</button>
+                                    </div>
                                 </div>
 
-                                <div class="canvas-container ${q.bgType}" id="container_${canvasId}">
-                                    <canvas id="${canvasId}" height="${q.canvasHeight}"></canvas>
+                                <div class="image-upload-zone ${q.bgType==='image'?'show':''}" id="imgup_${cid}"
+                                     onclick="triggerBgUpload('${cid}','${q.id}')">
+                                    <p>📁 Cliquez pour charger une image de fond</p>
+                                    ${q.bgImage ? `<img class="preview" src="${q.bgImage}">` : ''}
+                                </div>
+
+                                <div class="canvas-container ${q.bgType !== 'image' ? q.bgType : 'image-bg'}"
+                                     id="container_${cid}"
+                                     ${q.bgImage && q.bgType === 'image' ? `style="background-image:url('${q.bgImage}')"` : ''}>
+                                    <canvas id="${cid}" height="${q.canvasHeight}"></canvas>
                                 </div>
                             </div>
 
-                            <!-- TEXT MODE (hidden) -->
-                            <div id="text_${q.id}" style="display:none;">
-                                <textarea class="text-answer" id="textarea_${q.id}" placeholder="Tapez votre réponse ici...">${q.textAnswer || ''}</textarea>
+                            <!-- TEXT + LATEX MODE -->
+                            <div class="text-answer-container" id="text_${q.id}">
+                                <div class="latex-editor">
+                                    <div class="latex-toolbar">
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','$  $', 2)">$x$<span class="label">inline</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','$$  $$', 3)">$$x$$<span class="label">bloc</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\frac{}{}', 6)">½<span class="label">frac</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\sqrt{}', 6)">√<span class="label">racine</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','^{}', 2)">x²<span class="label">exp</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','_{}', 2)">xᵢ<span class="label">indice</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\vec{}', 5)">→<span class="label">vec</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\sum_{}^{}', 6)">Σ<span class="label">somme</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\int_{}^{}', 6)">∫<span class="label">integ</span></button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\times ', 0)">×</button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\Delta ', 0)">Δ</button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\alpha ', 0)">α</button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\omega ', 0)">ω</button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\rightarrow ', 0)">→</button>
+                                        <button class="latex-btn" onclick="insertLatex('${q.id}','\\\\infty ', 0)">∞</button>
+                                    </div>
+
+                                    <div class="editor-split">
+                                        <div>
+                                            <div class="editor-input-label">⌨️ Écriture (LaTeX + texte)</div>
+                                            <textarea class="text-answer" id="ta_${q.id}"
+                                                placeholder="Tapez votre réponse...&#10;Utilisez $...$ pour les formules.&#10;&#10;Ex: La force est $F = m \\times a = 5 \\times 2.5 = 12.5$ N"
+                                                oninput="livePreview('${q.id}')">${q.textAnswer || ''}</textarea>
+                                        </div>
+                                        <div>
+                                            <div class="editor-input-label">👁️ Rendu</div>
+                                            <div class="latex-preview" id="preview_${q.id}">
+                                                <em style="color:#aaa;">Le rendu apparaîtra ici...</em>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="image-insert-bar">
+                                        <button class="image-insert-btn" onclick="triggerTextImage('${q.id}')">🖼️ Insérer image(s)</button>
+                                        <span style="color:#8888bb;font-size:0.8rem;">Photos, schémas, captures...</span>
+                                    </div>
+                                    <div class="inserted-images" id="imgs_${q.id}">
+                                        ${(q.images || []).map((img, i) => `
+                                            <div class="inserted-image-thumb">
+                                                <img src="${img}">
+                                                <button class="remove-img" onclick="removeImage('${q.id}', ${i})">✕</button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="status-bar">
-                            <div>
-                                <span class="status-badge ${statusClass}" onclick="cycleStatus('${q.id}')">${statusText}</span>
-                            </div>
-                            <button style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:0.85rem;" onclick="deleteQuestion('${q.id}')">🗑️ Supprimer</button>
+                            <span class="status-badge ${stClass}" onclick="cycleStatus('${q.id}')">${stText}</span>
+                            <button class="delete-btn" onclick="deleteQuestion('${q.id}')">🗑️ Supprimer</button>
                         </div>
                     </div>
                 </div>`;
@@ -911,24 +1358,179 @@
 
             content.innerHTML = html;
 
+            // Render KaTeX in all question texts and hints
+            questions.forEach(q => {
+                renderKaTeX(`qtext_${q.id}`);
+                if (q.hint) renderKaTeX(`hint_${q.id}`);
+                if (q.textAnswer) livePreview(q.id);
+            });
+
             // Init canvases
             questions.forEach(q => {
-                const canvasId = `canvas_${currentSubject}_${q.id}`;
-                initCanvas(canvasId);
+                const cid = `c_${currentChapter}_${q.id}`;
+                setTimeout(() => initCanvas(cid), 50);
             });
         }
 
-        function getSubjectName(key) {
-            const names = {
-                'physique-chimie': '⚗️ Physique-Chimie',
-                'mathematiques': '📐 Mathématiques',
-                'mecanique': '⚙️ Mécanique',
-                'electrotech': '🔌 Électrotechnique',
-                'electronique': '🔋 Électronique',
-                'informatique': '💻 Informatique',
-                'thermodynamique': '🌡️ Thermodynamique'
+        // =============================================
+        // KATEX RENDERING
+        // =============================================
+        function renderKaTeX(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            renderMathInElement(el, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+        }
+
+        function formatText(text) {
+            return text.replace(/\n/g, '<br>');
+        }
+
+        // =============================================
+        // LIVE LATEX PREVIEW (text answer)
+        // =============================================
+        function livePreview(qId) {
+            const ta = document.getElementById(`ta_${qId}`);
+            const preview = document.getElementById(`preview_${qId}`);
+            if (!ta || !preview) return;
+
+            let val = ta.value;
+            // Convert newlines to <br>
+            let html = val.replace(/\n/g, '<br>');
+            preview.innerHTML = html || '<em style="color:#aaa;">Le rendu apparaîtra ici...</em>';
+            renderKaTeX(`preview_${qId}`);
+
+            // Save
+            const q = findQuestion(qId);
+            if (q) q.textAnswer = val;
+        }
+
+        function insertLatex(qId, snippet, cursorBack) {
+            const ta = document.getElementById(`ta_${qId}`);
+            if (!ta) return;
+            const start = ta.selectionStart;
+            const end = ta.selectionEnd;
+            const text = ta.value;
+            ta.value = text.substring(0, start) + snippet + text.substring(end);
+            const newPos = start + snippet.length - cursorBack;
+            ta.setSelectionRange(newPos, newPos);
+            ta.focus();
+            livePreview(qId);
+        }
+
+        // =============================================
+        // MODAL
+        // =============================================
+        function openModal() {
+            document.getElementById('addModal').classList.add('show');
+            // Fill chapter selector
+            const sel = document.getElementById('modalChapter');
+            sel.innerHTML = chapters.map(ch =>
+                `<option value="${ch.id}" ${ch.id === currentChapter ? 'selected' : ''}>${ch.icon} ${ch.name}</option>`
+            ).join('');
+            document.getElementById('modalTitle').value = '';
+            document.getElementById('modalText').value = '';
+            document.getElementById('modalHint').value = '';
+            document.getElementById('modalPreview').innerHTML = '<em style="color:#aaa;">L\'aperçu apparaîtra ici...</em>';
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('show');
+        }
+
+        function previewModal() {
+            const text = document.getElementById('modalText').value;
+            const prev = document.getElementById('modalPreview');
+            prev.innerHTML = formatText(text) || '<em style="color:#aaa;">L\'aperçu apparaîtra ici...</em>';
+            renderKaTeX('modalPreview');
+        }
+
+        function addQuestion() {
+            const title = document.getElementById('modalTitle').value.trim();
+            const text = document.getElementById('modalText').value.trim();
+            const hint = document.getElementById('modalHint').value.trim();
+            const diff = document.getElementById('modalDiff').value;
+            const points = parseInt(document.getElementById('modalPoints').value) || 4;
+            const bg = document.getElementById('modalBg').value;
+            const height = parseInt(document.getElementById('modalHeight').value) || 300;
+            const chap = document.getElementById('modalChapter').value;
+
+            if (!title || !text) {
+                alert('Veuillez remplir le titre et l\'énoncé.');
+                return;
+            }
+
+            const newQ = {
+                id: 'q_' + Date.now(),
+                title, text, hint,
+                difficulty: diff,
+                points,
+                bgType: bg,
+                canvasHeight: height,
+                status: 'todo',
+                textAnswer: '',
+                images: [],
+                bgImage: null
             };
-            return names[key] || key;
+
+            if (!questionsDB[chap]) questionsDB[chap] = [];
+            questionsDB[chap].push(newQ);
+            currentChapter = chap;
+
+            closeModal();
+            renderChapterTabs();
+            renderQuestions();
+        }
+
+        // =============================================
+        // QUESTION ACTIONS
+        // =============================================
+        function findQuestion(qId) {
+            const qs = questionsDB[currentChapter] || [];
+            return qs.find(q => q.id === qId);
+        }
+
+        function toggleBody(qId) {
+            const body = document.getElementById(`body_${qId}`);
+            const icon = document.getElementById(`cicon_${qId}`);
+            body.classList.toggle('hidden');
+            icon.textContent = body.classList.contains('hidden') ? '▶' : '▼';
+        }
+
+        function toggleHint(qId) {
+            const hint = document.getElementById(`hint_${qId}`);
+            hint.classList.toggle('show');
+        }
+
+        function showMode(qId, mode, btn) {
+            document.getElementById(`draw_${qId}`).style.display = mode === 'draw' ? 'block' : 'none';
+            document.getElementById(`text_${qId}`).style.display = mode === 'text' ? 'block' : 'none';
+            document.getElementById(`text_${qId}`).classList.toggle('show', mode === 'text');
+            btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (mode === 'text') livePreview(qId);
+        }
+
+        function cycleStatus(qId) {
+            const q = findQuestion(qId);
+            if (!q) return;
+            if (q.status === 'todo') q.status = 'done';
+            else if (q.status === 'done') q.status = 'review';
+            else q.status = 'todo';
+            renderQuestions();
+        }
+
+        function deleteQuestion(qId) {
+            if (!confirm('Supprimer cette question ?')) return;
+            questionsDB[currentChapter] = (questionsDB[currentChapter] || []).filter(q => q.id !== qId);
+            const cid = `c_${currentChapter}_${qId}`;
+            localStorage.removeItem(`drawing_${cid}`);
+            renderQuestions();
         }
 
         // =============================================
@@ -940,15 +1542,14 @@
 
             const container = canvas.parentElement;
             const rect = container.getBoundingClientRect();
-            canvas.width = rect.width;
+            canvas.width = rect.width - 4;
 
             const ctx = canvas.getContext('2d');
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
             canvasInstances[canvasId] = {
-                ctx: ctx,
-                canvas: canvas,
+                ctx, canvas,
                 drawing: false,
                 tool: 'pen',
                 color: '#000000',
@@ -957,185 +1558,246 @@
                 lastPoint: null
             };
 
-            // Restore saved drawing
-            const savedData = localStorage.getItem(`drawing_${canvasId}`);
-            if (savedData) {
+            // Restore
+            const saved = localStorage.getItem(`drawing_${canvasId}`);
+            if (saved) {
                 const img = new Image();
-                img.onload = () => ctx.drawImage(img, 0, 0);
-                img.src = savedData;
+                img.onload = () => { ctx.drawImage(img, 0, 0); saveState(canvasId); };
+                img.src = saved;
+            } else {
+                saveState(canvasId);
             }
 
-            // Save current state
-            saveCanvasState(canvasId);
-
-            // Event listeners - pointer events for stylus support
-            canvas.addEventListener('pointerdown', (e) => startDraw(e, canvasId));
-            canvas.addEventListener('pointermove', (e) => draw(e, canvasId));
-            canvas.addEventListener('pointerup', (e) => endDraw(e, canvasId));
-            canvas.addEventListener('pointerleave', (e) => endDraw(e, canvasId));
-
-            // Prevent scrolling while drawing
-            canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
-            canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+            canvas.addEventListener('pointerdown', e => pStart(e, canvasId));
+            canvas.addEventListener('pointermove', e => pMove(e, canvasId));
+            canvas.addEventListener('pointerup', e => pEnd(e, canvasId));
+            canvas.addEventListener('pointerleave', e => pEnd(e, canvasId));
+            canvas.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+            canvas.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
         }
 
-        function getCanvasPos(e, canvasId) {
-            const inst = canvasInstances[canvasId];
-            const rect = inst.canvas.getBoundingClientRect();
-            const scaleX = inst.canvas.width / rect.width;
-            const scaleY = inst.canvas.height / rect.height;
+        function getPos(e, id) {
+            const inst = canvasInstances[id];
+            const r = inst.canvas.getBoundingClientRect();
+            const sx = inst.canvas.width / r.width;
+            const sy = inst.canvas.height / r.height;
             return {
-                x: (e.clientX - rect.left) * scaleX,
-                y: (e.clientY - rect.top) * scaleY,
-                pressure: e.pressure || 0.5
+                x: (e.clientX - r.left) * sx,
+                y: (e.clientY - r.top) * sy,
+                p: e.pressure || 0.5
             };
         }
 
-        function startDraw(e, canvasId) {
-            const inst = canvasInstances[canvasId];
+        function pStart(e, id) {
+            const inst = canvasInstances[id];
             inst.drawing = true;
-            const pos = getCanvasPos(e, canvasId);
-            inst.lastPoint = pos;
-
-            inst.ctx.beginPath();
-            inst.ctx.moveTo(pos.x, pos.y);
+            inst.lastPoint = getPos(e, id);
         }
 
-        function draw(e, canvasId) {
-            const inst = canvasInstances[canvasId];
+        function pMove(e, id) {
+            const inst = canvasInstances[id];
             if (!inst.drawing) return;
+            const pos = getPos(e, id);
+            const ctx = inst.ctx;
 
-            const pos = getCanvasPos(e, canvasId);
-
-            inst.ctx.beginPath();
-            inst.ctx.moveTo(inst.lastPoint.x, inst.lastPoint.y);
-            inst.ctx.lineTo(pos.x, pos.y);
+            ctx.beginPath();
+            ctx.moveTo(inst.lastPoint.x, inst.lastPoint.y);
+            ctx.lineTo(pos.x, pos.y);
 
             if (inst.tool === 'pen') {
-                inst.ctx.globalAlpha = 1;
-                inst.ctx.globalCompositeOperation = 'source-over';
-                inst.ctx.strokeStyle = inst.color;
-                // Pressure sensitivity
-                const pressureSize = inst.size * (0.5 + pos.pressure);
-                inst.ctx.lineWidth = pressureSize;
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = inst.color;
+                ctx.lineWidth = inst.size * (0.5 + pos.p);
             } else if (inst.tool === 'highlighter') {
-                inst.ctx.globalAlpha = 0.3;
-                inst.ctx.globalCompositeOperation = 'source-over';
-                inst.ctx.strokeStyle = inst.color;
-                inst.ctx.lineWidth = inst.size * 5;
+                ctx.globalAlpha = 0.25;
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = inst.color;
+                ctx.lineWidth = inst.size * 6;
             } else if (inst.tool === 'eraser') {
-                inst.ctx.globalAlpha = 1;
-                inst.ctx.globalCompositeOperation = 'destination-out';
-                inst.ctx.strokeStyle = 'rgba(0,0,0,1)';
-                inst.ctx.lineWidth = inst.size * 5;
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.strokeStyle = 'rgba(0,0,0,1)';
+                ctx.lineWidth = inst.size * 5;
             }
 
-            inst.ctx.stroke();
+            ctx.stroke();
             inst.lastPoint = pos;
         }
 
-        function endDraw(e, canvasId) {
-            const inst = canvasInstances[canvasId];
-            if (inst.drawing) {
-                inst.drawing = false;
-                inst.ctx.globalAlpha = 1;
-                inst.ctx.globalCompositeOperation = 'source-over';
-                saveCanvasState(canvasId);
-                autoSaveDrawing(canvasId);
-            }
+        function pEnd(e, id) {
+            const inst = canvasInstances[id];
+            if (!inst || !inst.drawing) return;
+            inst.drawing = false;
+            inst.ctx.globalAlpha = 1;
+            inst.ctx.globalCompositeOperation = 'source-over';
+            saveState(id);
+            autoSave(id);
         }
 
-        function saveCanvasState(canvasId) {
-            const inst = canvasInstances[canvasId];
+        function saveState(id) {
+            const inst = canvasInstances[id];
             if (!inst) return;
-            const data = inst.canvas.toDataURL();
-            inst.history.push(data);
+            inst.history.push(inst.canvas.toDataURL());
             if (inst.history.length > 30) inst.history.shift();
         }
 
-        function undoCanvas(canvasId) {
-            const inst = canvasInstances[canvasId];
+        function undoCanvas(id) {
+            const inst = canvasInstances[id];
             if (!inst || inst.history.length < 2) return;
-
             inst.history.pop();
-            const prevData = inst.history[inst.history.length - 1];
-
+            const prev = inst.history[inst.history.length - 1];
             const img = new Image();
             img.onload = () => {
                 inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
                 inst.ctx.drawImage(img, 0, 0);
-                autoSaveDrawing(canvasId);
+                autoSave(id);
             };
-            img.src = prevData;
+            img.src = prev;
         }
 
-        function clearCanvas(canvasId) {
-            const inst = canvasInstances[canvasId];
+        function clearCanvas(id) {
+            const inst = canvasInstances[id];
             if (!inst) return;
-            if (!confirm('Effacer tout le contenu ?')) return;
+            if (!confirm('Effacer tout ?')) return;
             inst.ctx.clearRect(0, 0, inst.canvas.width, inst.canvas.height);
-            saveCanvasState(canvasId);
-            autoSaveDrawing(canvasId);
+            saveState(id);
+            autoSave(id);
         }
 
-        function autoSaveDrawing(canvasId) {
-            const inst = canvasInstances[canvasId];
+        function autoSave(id) {
+            const inst = canvasInstances[id];
             if (!inst) return;
-            localStorage.setItem(`drawing_${canvasId}`, inst.canvas.toDataURL());
+            try { localStorage.setItem(`drawing_${id}`, inst.canvas.toDataURL()); } catch(e) {}
         }
 
-        function setTool(canvasId, tool, btn) {
-            const inst = canvasInstances[canvasId];
+        function setTool(id, tool, btn) {
+            const inst = canvasInstances[id];
             if (inst) inst.tool = tool;
-
-            const toolbar = btn.parentElement;
+            const toolbar = btn.closest('.drawing-tools');
             toolbar.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
-        function setColor(canvasId, color, btn) {
-            const inst = canvasInstances[canvasId];
+        function setColor(id, color, btn) {
+            const inst = canvasInstances[id];
             if (inst) inst.color = color;
-
-            const toolbar = btn.parentElement;
+            const toolbar = btn.closest('.drawing-tools');
             toolbar.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
-        function setSize(canvasId, size) {
-            const inst = canvasInstances[canvasId];
-            if (inst) inst.size = parseInt(size);
+        function setStrokeSize(id, val, slider) {
+            const inst = canvasInstances[id];
+            if (inst) inst.size = parseInt(val);
+            const lbl = document.getElementById(`sizelbl_${id}`);
+            if (lbl) lbl.textContent = val;
         }
 
         // =============================================
-        // TOGGLE MODES
+        // CANVAS BACKGROUND
         // =============================================
-        function showDrawMode(qId, canvasId, btn) {
-            document.getElementById(`draw_${qId}`).style.display = 'block';
-            document.getElementById(`text_${qId}`).style.display = 'none';
-            btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        function setBg(cid, qId, bgType, btn) {
+            const q = findQuestion(qId);
+            if (q) q.bgType = bgType;
+
+            btn.parentElement.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
+            const container = document.getElementById(`container_${cid}`);
+            container.className = 'canvas-container';
+            if (bgType === 'image') {
+                container.classList.add('image-bg');
+                if (q && q.bgImage) {
+                    container.style.backgroundImage = `url('${q.bgImage}')`;
+                }
+            } else {
+                container.classList.add(bgType);
+                container.style.backgroundImage = '';
+            }
+
+            // Show/hide image upload
+            const upzone = document.getElementById(`imgup_${cid}`);
+            if (upzone) {
+                upzone.classList.toggle('show', bgType === 'image');
+            }
         }
 
-        function showTextMode(qId, btn) {
-            document.getElementById(`draw_${qId}`).style.display = 'none';
-            document.getElementById(`text_${qId}`).style.display = 'block';
-            btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
+        function triggerBgUpload(cid, qId) {
+            const input = document.getElementById('globalFileInput');
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    const q = findQuestion(qId);
+                    if (q) q.bgImage = dataUrl;
 
-        function toggleQuestion(qId) {
-            const body = document.getElementById(`body_${qId}`);
-            body.style.display = body.style.display === 'none' ? 'block' : '';
+                    const container = document.getElementById(`container_${cid}`);
+                    container.style.backgroundImage = `url('${dataUrl}')`;
+                    container.className = 'canvas-container image-bg';
+
+                    const upzone = document.getElementById(`imgup_${cid}`);
+                    upzone.innerHTML = `<p>📁 Cliquez pour changer l'image</p><img class="preview" src="${dataUrl}">`;
+                };
+                reader.readAsDataURL(file);
+                input.value = '';
+            };
+            input.click();
         }
 
         // =============================================
-        // FULLSCREEN CANVAS
+        // TEXT ANSWER IMAGE INSERT
         // =============================================
-        let fullscreenSourceId = null;
+        function triggerTextImage(qId) {
+            const input = document.getElementById('textImageInput');
+            input.onchange = (e) => {
+                const files = e.target.files;
+                if (!files.length) return;
+                const q = findQuestion(qId);
+                if (!q) return;
+                if (!q.images) q.images = [];
 
-        function openFullscreen(canvasId) {
-            fullscreenSourceId = canvasId;
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        q.images.push(ev.target.result);
+                        renderInsertedImages(qId);
+                    };
+                    reader.readAsDataURL(file);
+                });
+                input.value = '';
+            };
+            input.click();
+        }
+
+        function renderInsertedImages(qId) {
+            const q = findQuestion(qId);
+            const container = document.getElementById(`imgs_${qId}`);
+            if (!q || !container) return;
+            container.innerHTML = (q.images || []).map((img, i) => `
+                <div class="inserted-image-thumb">
+                    <img src="${img}">
+                    <button class="remove-img" onclick="removeImage('${qId}', ${i})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removeImage(qId, index) {
+            const q = findQuestion(qId);
+            if (!q) return;
+            q.images.splice(index, 1);
+            renderInsertedImages(qId);
+        }
+
+        // =============================================
+        // FULLSCREEN
+        // =============================================
+        let fsSourceId = null;
+
+        function openFullscreen(cid) {
+            fsSourceId = cid;
             const overlay = document.getElementById('fullscreenOverlay');
             const fsCanvas = document.getElementById('fullscreenCanvas');
             overlay.classList.add('show');
@@ -1149,159 +1811,83 @@
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-            // Copy existing content
-            const sourceInst = canvasInstances[canvasId];
-            if (sourceInst) {
-                ctx.drawImage(sourceInst.canvas, 0, 0);
-            }
+            const src = canvasInstances[cid];
+            if (src) ctx.drawImage(src.canvas, 0, 0);
 
-            canvasInstances['fullscreen'] = {
-                ctx: ctx,
-                canvas: fsCanvas,
-                drawing: false,
-                tool: 'pen',
-                color: '#000000',
-                size: 2,
-                history: [],
-                lastPoint: null
+            canvasInstances['fs'] = {
+                ctx, canvas: fsCanvas,
+                drawing: false, tool: 'pen',
+                color: '#000000', size: 2,
+                history: [], lastPoint: null
             };
+            saveState('fs');
 
-            fsCanvas.onpointerdown = (e) => startDraw(e, 'fullscreen');
-            fsCanvas.onpointermove = (e) => draw(e, 'fullscreen');
-            fsCanvas.onpointerup = (e) => endDraw(e, 'fullscreen');
-            fsCanvas.ontouchstart = (e) => e.preventDefault();
-            fsCanvas.ontouchmove = (e) => e.preventDefault();
-
-            saveCanvasState('fullscreen');
+            fsCanvas.onpointerdown = e => pStart(e, 'fs');
+            fsCanvas.onpointermove = e => pMove(e, 'fs');
+            fsCanvas.onpointerup = e => pEnd(e, 'fs');
+            fsCanvas.ontouchstart = e => e.preventDefault();
+            fsCanvas.ontouchmove = e => e.preventDefault();
         }
 
         function closeFullscreen() {
-            const overlay = document.getElementById('fullscreenOverlay');
-            overlay.classList.remove('show');
-
-            // Copy back to source
-            if (fullscreenSourceId && canvasInstances[fullscreenSourceId]) {
-                const sourceInst = canvasInstances[fullscreenSourceId];
+            document.getElementById('fullscreenOverlay').classList.remove('show');
+            if (fsSourceId && canvasInstances[fsSourceId]) {
+                const src = canvasInstances[fsSourceId];
                 const fsCanvas = document.getElementById('fullscreenCanvas');
-                sourceInst.ctx.clearRect(0, 0, sourceInst.canvas.width, sourceInst.canvas.height);
-                sourceInst.ctx.drawImage(fsCanvas, 0, 0, sourceInst.canvas.width, sourceInst.canvas.height);
-                saveCanvasState(fullscreenSourceId);
-                autoSaveDrawing(fullscreenSourceId);
+                src.ctx.clearRect(0, 0, src.canvas.width, src.canvas.height);
+                src.ctx.drawImage(fsCanvas, 0, 0, src.canvas.width, src.canvas.height);
+                saveState(fsSourceId);
+                autoSave(fsSourceId);
             }
         }
 
-        function fullscreenUndo() { undoCanvas('fullscreen'); }
-        function fullscreenClear() {
-            const inst = canvasInstances['fullscreen'];
+        function fsUndo() { undoCanvas('fs'); }
+        function fsClear() {
+            const inst = canvasInstances['fs'];
             if (!inst) return;
             inst.ctx.fillStyle = 'white';
             inst.ctx.fillRect(0, 0, inst.canvas.width, inst.canvas.height);
-            saveCanvasState('fullscreen');
+            saveState('fs');
+        }
+        function fsTool(t) {
+            const inst = canvasInstances['fs'];
+            if (inst) inst.tool = t;
+            ['pen','hl','er'].forEach(x => {
+                const el = document.getElementById(`fs_${x}`);
+                if(el) el.classList.remove('active');
+            });
+            const map = {pen:'pen',highlighter:'hl',eraser:'er'};
+            const el = document.getElementById(`fs_${map[t]}`);
+            if(el) el.classList.add('active');
+        }
+        function fsColor(c, btn) {
+            const inst = canvasInstances['fs'];
+            if (inst) inst.color = c;
+            btn.parentElement.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        function fsSize(v) {
+            const inst = canvasInstances['fs'];
+            if (inst) inst.size = parseInt(v);
         }
 
         // =============================================
-        // SUBJECT NAVIGATION
-        // =============================================
-        function selectSubject(el, subject) {
-            currentSubject = subject;
-            document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
-            el.classList.add('active');
-
-            if (!questionsDB[subject]) questionsDB[subject] = [];
-            renderQuestions();
-
-            // Close mobile sidebar
-            document.getElementById('sidebar').classList.remove('mobile-show');
-        }
-
-        function toggleMobileSidebar() {
-            document.getElementById('sidebar').classList.toggle('mobile-show');
-        }
-
-        // =============================================
-        // QUESTION MANAGEMENT
-        // =============================================
-        function openModal() {
-            document.getElementById('addModal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('addModal').classList.remove('show');
-        }
-
-        function addQuestion() {
-            const title = document.getElementById('modalTitle').value.trim();
-            const text = document.getElementById('modalText').value.trim();
-            const diff = document.getElementById('modalDiff').value;
-            const bg = document.getElementById('modalBg').value;
-            const height = parseInt(document.getElementById('modalHeight').value);
-
-            if (!title || !text) {
-                alert('Veuillez remplir le titre et l\'énoncé.');
-                return;
-            }
-
-            // Parse simple formatting
-            let formattedText = text
-                .replace(/\[f\](.*?)\[\/f\]/g, '<span class="formula">$1</span>')
-                .replace(/\[h\](.*?)\[\/h\]/g, '<span class="highlight">$1</span>')
-                .replace(/\[u\](.*?)\[\/u\]/g, '<span class="unit">$1</span>')
-                .replace(/\n/g, '<br>');
-
-            const newQ = {
-                id: 'q_' + Date.now(),
-                title: title,
-                text: formattedText,
-                difficulty: diff,
-                bgType: bg,
-                canvasHeight: height,
-                status: 'todo'
-            };
-
-            if (!questionsDB[currentSubject]) questionsDB[currentSubject] = [];
-            questionsDB[currentSubject].push(newQ);
-
-            closeModal();
-            renderQuestions();
-
-            // Clear form
-            document.getElementById('modalTitle').value = '';
-            document.getElementById('modalText').value = '';
-        }
-
-        function deleteQuestion(qId) {
-            if (!confirm('Supprimer cette question ?')) return;
-            questionsDB[currentSubject] = questionsDB[currentSubject].filter(q => q.id !== qId);
-            localStorage.removeItem(`drawing_canvas_${currentSubject}_${qId}`);
-            renderQuestions();
-        }
-
-        function cycleStatus(qId) {
-            const q = questionsDB[currentSubject].find(q => q.id === qId);
-            if (!q) return;
-            if (q.status === 'todo') q.status = 'done';
-            else if (q.status === 'done') q.status = 'review';
-            else q.status = 'todo';
-            renderQuestions();
-        }
-
-        // =============================================
-        // SAVE / LOAD
+        // SAVE / LOAD / CLEAR
         // =============================================
         function saveAll() {
-            // Save text answers
-            for (let subject in questionsDB) {
-                questionsDB[subject].forEach(q => {
-                    const ta = document.getElementById(`textarea_${q.id}`);
+            // Capture text answers
+            for (let ch in questionsDB) {
+                (questionsDB[ch] || []).forEach(q => {
+                    const ta = document.getElementById(`ta_${q.id}`);
                     if (ta) q.textAnswer = ta.value;
                 });
             }
-            localStorage.setItem('coursDB', JSON.stringify(questionsDB));
+            localStorage.setItem('pc_questionsDB', JSON.stringify(questionsDB));
             alert('✅ Sauvegarde effectuée !');
         }
 
         function loadAll() {
-            const saved = localStorage.getItem('coursDB');
+            const saved = localStorage.getItem('pc_questionsDB');
             if (saved) {
                 questionsDB = JSON.parse(saved);
                 renderQuestions();
@@ -1311,67 +1897,45 @@
             }
         }
 
-        function clearAll() {
-            if (!confirm('⚠️ Tout effacer ? Cette action est irréversible !')) return;
+        function clearAllData() {
+            if (!confirm('⚠️ Tout effacer ? Irréversible !')) return;
             localStorage.clear();
             questionsDB = {};
-            initDB();
+            for (let ch in defaultQuestions) {
+                questionsDB[ch] = JSON.parse(JSON.stringify(defaultQuestions[ch]));
+            }
             renderQuestions();
         }
 
-        function exportPDF() {
-            window.print();
-        }
+        function exportPDF() { window.print(); }
 
         // =============================================
-        // RESIZE HANDLER
+        // RESIZE
         // =============================================
         window.addEventListener('resize', () => {
-            // Resize canvases
             for (let id in canvasInstances) {
-                if (id === 'fullscreen') continue;
+                if (id === 'fs') continue;
                 const inst = canvasInstances[id];
-                const container = inst.canvas.parentElement;
-                if (!container) continue;
-
-                const savedData = inst.canvas.toDataURL();
-                const newWidth = container.getBoundingClientRect().width;
-
-                if (Math.abs(inst.canvas.width - newWidth) > 10) {
+                if (!inst || !inst.canvas.parentElement) continue;
+                const saved = inst.canvas.toDataURL();
+                const nw = inst.canvas.parentElement.getBoundingClientRect().width - 4;
+                if (Math.abs(inst.canvas.width - nw) > 10) {
                     const img = new Image();
                     img.onload = () => {
-                        inst.canvas.width = newWidth;
+                        inst.canvas.width = nw;
                         inst.ctx.lineCap = 'round';
                         inst.ctx.lineJoin = 'round';
-                        inst.ctx.drawImage(img, 0, 0, newWidth, inst.canvas.height);
+                        inst.ctx.drawImage(img, 0, 0, nw, inst.canvas.height);
                     };
-                    img.src = savedData;
+                    img.src = saved;
                 }
             }
         });
 
         // =============================================
-        // INIT
+        // START
         // =============================================
-        initDB();
-
-        // Try loading saved data
-        const saved = localStorage.getItem('coursDB');
-        if (saved) {
-            try {
-                questionsDB = JSON.parse(saved);
-                // Ensure all subjects exist
-                for (let subject in defaultQuestions) {
-                    if (!questionsDB[subject]) {
-                        questionsDB[subject] = JSON.parse(JSON.stringify(defaultQuestions[subject]));
-                    }
-                }
-            } catch(e) {
-                initDB();
-            }
-        }
-
-        renderQuestions();
+        init();
     </script>
 </body>
 </html>
